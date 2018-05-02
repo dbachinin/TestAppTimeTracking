@@ -1,0 +1,64 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Theme:</strong>
+  <%= @task.theme %>
+</p>
+
+<p>
+  <strong>Description:</strong>
+  <%= @task.description %>
+</p>
+
+<p>
+  <strong>Date range:</strong>
+  <%= @task.date_range %>
+</p>
+
+<p>
+  <strong>Task type:</strong>
+  <%= @task.task_type %>
+</p>
+
+<p>
+  <strong>Task priority:</strong>
+  <%= @task.task_priority %>
+</p>
+
+<p>
+  <strong>Tame estimate:</strong>
+  <%= @task.tame_estimate %>
+</p>
+
+<p>
+  <strong>Coments:</strong>
+  <%= @task.coments %>
+</p>
+
+<p>
+  <strong>User:</strong>
+  <%= @task.user_id %>
+</p>
+
+<p>
+  <strong>Creator:</strong>
+  <%= @task.creator %>
+</p>
+
+<p>
+  <strong>Project:</strong>
+  <%= @task.project_id %>
+</p>
+
+<p>
+  <strong>Logs:</strong>
+  <%= @task.logs %>
+</p>
+
+<p>
+  <strong>Teken time:</strong>
+  <%= @task.teken_time %>
+</p>
+
+<%= link_to 'Edit', edit_task_path(@task) %> |
+<%= link_to 'Back', tasks_path %>

@@ -1,0 +1,77 @@
+<%= form_with(model: task, local: true) do |form| %>
+  <% if task.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(task.errors.count, "error") %> prohibited this task from being saved:</h2>
+
+      <ul>
+      <% task.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :theme %>
+    <%= form.text_field :theme, id: :task_theme %>
+  </div>
+
+  <div class="field">
+    <%= form.label :description %>
+    <%= form.text_field :description, id: :task_description %>
+  </div>
+
+  <div class="field">
+    <%= form.label :date_range %>
+    <%= form.text_field :date_range, id: :task_date_range %>
+  </div>
+
+  <div class="field">
+    <%= form.label :task_type %>
+    <%= form.text_field :task_type, id: :task_task_type %>
+  </div>
+
+  <div class="field">
+    <%= form.label :task_priority %>
+    <%= form.number_field :task_priority, id: :task_task_priority %>
+  </div>
+
+  <div class="field">
+    <%= form.label :tame_estimate %>
+    <%= form.time_select :tame_estimate, id: :task_tame_estimate %>
+  </div>
+
+  <div class="field">
+    <%= form.label :coments %>
+    <%= form.text_field :coments, id: :task_coments %>
+  </div>
+
+  <div class="field">
+    <%= form.label :user_id %>
+    <%= form.number_field :user_id, id: :task_user_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :creator %>
+    <%= form.number_field :creator, id: :task_creator %>
+  </div>
+
+  <div class="field">
+    <%= form.label :project_id %>
+    <%= form.number_field :project_id, id: :task_project_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :logs %>
+    <%= form.text_field :logs, id: :task_logs %>
+  </div>
+
+  <div class="field">
+    <%= form.label :teken_time %>
+    <%= form.time_select :teken_time, id: :task_teken_time %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>
