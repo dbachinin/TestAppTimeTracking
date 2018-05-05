@@ -1,14 +1,22 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>TimeTracking</title>
-    <%= csrf_meta_tags %>
-
-    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <title>Time Tracking</title>
+ <%= csrf_meta_tags %>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
+  <%= stylesheet_link_tag    'application', media: 'all', 'bootstrap.min': 'reload' %>
+  <%= javascript_include_tag 'application', 'jquery': 'reload' %>
+  <%= javascript_include_tag 'application', 'jquery_ujs': 'reload' %>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
   </head>
 
   <body>
-    <%= yield %>
+    <%= render 'layouts/header'%>
+    <div class="container">
+        <% flash.each do |name, msg| %>
+            <%= content_tag(:div, msg, class: "alert alert-info") %>
+        <% end %>
+        <%= yield %>
+    </div>
   </body>
 </html>

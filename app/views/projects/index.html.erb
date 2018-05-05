@@ -1,4 +1,3 @@
-<p id="notice"><%= notice %></p>
 
 <h1>Projects</h1>
 
@@ -7,6 +6,7 @@
     <tr>
       <th>User</th>
       <th>Task</th>
+      <th>User</th>
       <th colspan="3"></th>
     </tr>
   </thead>
@@ -14,11 +14,12 @@
   <tbody>
     <% @projects.each do |project| %>
       <tr>
-        <td><%= project.user_id %></td>
-        <td><%= project.task_id %></td>
-        <td><%= link_to 'Show', project %></td>
-        <td><%= link_to 'Edit', edit_project_path(project) %></td>
-        <td><%= link_to 'Destroy', project, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= project.project_name %></td>
+        <td><%= project.tasks %></td>
+        <td><%= User.find(project.user_id).name %></td>
+        <td><%= link_to 'Show', user_project_path(@user, project) %></td>
+        <td><%= link_to 'Edit', edit_user_project_path(@user, project) %></td>
+        <td><%= link_to 'Destroy', ([@user, project]), method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>
   </tbody>
@@ -26,4 +27,4 @@
 
 <br>
 
-<%= link_to 'New Project', new_project_path %>
+<%= link_to 'New Project', new_user_project_path(@user, @project) %>

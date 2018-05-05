@@ -1,10 +1,11 @@
 class ProjectsController < ApplicationController
   before_action :set_project, only: [:show, :edit, :update, :destroy]
-
+  before_action :authenticate_user!
   # GET /projects
   # GET /projects.json
   def index
     @projects = Project.all
+    @user = current_user
   end
 
   # GET /projects/1
@@ -15,24 +16,31 @@ class ProjectsController < ApplicationController
   # GET /projects/new
   def new
     @project = Project.new
+    @user = current_user
   end
 
   # GET /projects/1/edit
   def edit
+    @user = current_user
   end
 
   # POST /projects
   # POST /projects.json
   def create
-    @project = Project.new(project_params)
-
+    # @project = Project.new(project_params)
+    # @user = current_user
+    @project = current_user.project.build(project_params)
+    # @project = Project.new(params[:projects])
+    # @poject.user_id = current_user.id
+    # @project.uid = SecureRandom.uuid
+    @project.tasks.push(params[:task])
     respond_to do |format|
       if @project.save
-        format.html { redirect_to @project, notice: 'Project was successfully created.' }
-        format.json { render :show, status: :created, location: @project }
+        format.html { redirect_to ([@user,@project]), notice: 'Project was successfully created.' }
+        format.json { render :show, status: :created, location: ([@user,@project]) }
       else
         format.html { render :new }
-        format.json { render json: @project.errors, status: :unprocessable_entity }
+        format.json { render json: ([@user,@project]).errors, status: :unprocessable_entity }
       end
     end
   end
@@ -69,6 +77,6 @@ class ProjectsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def project_params
-      params.require(:project).permit(:user_id, :task_id)
+      params.require(:project).permit(:project_name, :tasks, :description, :uid, :user_id, :user) 
     end
 end

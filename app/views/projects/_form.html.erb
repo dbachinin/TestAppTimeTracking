@@ -1,4 +1,4 @@
-<%= form_with(model: project, local: true) do |form| %>
+<%= form_with url: ([@user,@project]) do |form| %>
   <% if project.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(project.errors.count, "error") %> prohibited this project from being saved:</h2>
@@ -10,17 +10,23 @@
       </ul>
     </div>
   <% end %>
-
   <div class="field">
-    <%= form.label :user_id %>
-    <%= form.number_field :user_id, id: :project_user_id %>
+    <%= form.label :project_name %>
+    <%= form.text_field :project_name, id: :project_project_name %>
   </div>
 
   <div class="field">
-    <%= form.label :task_id %>
-    <%= form.number_field :task_id, id: :project_task_id %>
+    <%= form.label :task %>
+    <%= form.text_field :task, id: :project_tasks %>
   </div>
 
+  <div class="field">
+    <%= form.label :description %>
+    <%= form.text_area :description, id: :project_description %>
+  </div>
+<%= form.hidden_field :user_id, value: current_user.id %>
+<%= form.hidden_field :uid, value: SecureRandom.uuid %>
+<%= form.hidden_field :user, value: @user %>
   <div class="actions">
     <%= form.submit %>
   </div>

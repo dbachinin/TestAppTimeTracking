@@ -37,18 +37,13 @@
   </div>
 
   <div class="field">
-    <%= form.label :tame_estimate %>
-    <%= form.time_select :tame_estimate, id: :task_tame_estimate %>
+    <%= form.label :time_estimate %>
+    <%= form.datetime_select :time_estimate, id: :task_time_estimate %>
   </div>
 
   <div class="field">
-    <%= form.label :coments %>
-    <%= form.text_field :coments, id: :task_coments %>
-  </div>
-
-  <div class="field">
-    <%= form.label :user_id %>
-    <%= form.number_field :user_id, id: :task_user_id %>
+    <%= form.label :coment %>
+    <%= form.text_field :coment, id: :task_coment %>
   </div>
 
   <div class="field">
@@ -62,13 +57,13 @@
   </div>
 
   <div class="field">
-    <%= form.label :logs %>
-    <%= form.text_field :logs, id: :task_logs %>
+    <%= form.label :log %>
+    <%= form.text_field :log, id: :task_log %>
   </div>
 
   <div class="field">
     <%= form.label :teken_time %>
-    <%= form.time_select :teken_time, id: :task_teken_time %>
+    <%= form.datetime_select :teken_time, id: :task_teken_time %>
   </div>
 
   <div class="actions">

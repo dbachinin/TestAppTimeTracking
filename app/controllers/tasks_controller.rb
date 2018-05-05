@@ -1,6 +1,6 @@
 class TasksController < ApplicationController
   before_action :set_task, only: [:show, :edit, :update, :destroy]
-
+  before_action :authenticate_user!
   # GET /tasks
   # GET /tasks.json
   def index
@@ -10,11 +10,27 @@ class TasksController < ApplicationController
   # GET /tasks/1
   # GET /tasks/1.json
   def show
+    @comments = Task.find(params[:id]).coments
   end
 
+  def edit_coments
+    @comments = Task.find(params[:id]).coments
+  end
+
+  def add_coments
+    @task = Task.find(params[:id])
+    @coments = @task.coments
+    @coment = params[:task][:coment]
+    @coments.push(@coment)
+  end
+
+  def add_logs
+    @logs = Task.find(params[:id]).logs    
+  end
   # GET /tasks/new
   def new
     @task = Task.new
+    @user = current_user
   end
 
   # GET /tasks/1/edit
@@ -25,6 +41,10 @@ class TasksController < ApplicationController
   # POST /tasks.json
   def create
     @task = Task.new(task_params)
+    @coments = @task.coments
+    @coments.push(params[:task][:coment])
+    @logs = @task.logs
+    @logs.push(params[:task][:log])
 
     respond_to do |format|
       if @task.save
@@ -69,6 +89,6 @@ class TasksController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def task_params
-      params.require(:task).permit(:theme, :description, :date_range, :task_type, :task_priority, :tame_estimate, :coments, :user_id, :creator, :project_id, :logs, :teken_time)
+      params.require(:task).permit(:theme, :description, :date_range, :task_type, :task_priority, :tame_estimate, :coments, :user_id, :creator, :project_id, :logs, :teken_time, :coment, :log)
     end
 end
