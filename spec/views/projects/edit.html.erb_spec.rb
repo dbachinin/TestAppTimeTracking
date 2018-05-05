@@ -3,8 +3,11 @@ require 'rails_helper'
 RSpec.describe "projects/edit", type: :view do
   before(:each) do
     @project = assign(:project, Project.create!(
-      :user_id => 1,
-      :task_id => 1
+      :project_name => "MyString",
+      :tasks => "",
+      :description => "MyString",
+      :uid => "MyString",
+      :user_id => "MyString"
     ))
   end
 
@@ -13,9 +16,15 @@ RSpec.describe "projects/edit", type: :view do
 
     assert_select "form[action=?][method=?]", project_path(@project), "post" do
 
-      assert_select "input[name=?]", "project[user_id]"
+      assert_select "input[name=?]", "project[project_name]"
 
-      assert_select "input[name=?]", "project[task_id]"
+      assert_select "input[name=?]", "project[tasks]"
+
+      assert_select "input[name=?]", "project[description]"
+
+      assert_select "input[name=?]", "project[uid]"
+
+      assert_select "input[name=?]", "project[user_id]"
     end
   end
 end

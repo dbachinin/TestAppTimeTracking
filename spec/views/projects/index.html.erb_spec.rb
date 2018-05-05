@@ -4,19 +4,28 @@ RSpec.describe "projects/index", type: :view do
   before(:each) do
     assign(:projects, [
       Project.create!(
-        :user_id => 2,
-        :task_id => 3
+        :project_name => "Project Name",
+        :tasks => "",
+        :description => "Description",
+        :uid => "Uid",
+        :user_id => "User"
       ),
       Project.create!(
-        :user_id => 2,
-        :task_id => 3
+        :project_name => "Project Name",
+        :tasks => "",
+        :description => "Description",
+        :uid => "Uid",
+        :user_id => "User"
       )
     ])
   end
 
   it "renders a list of projects" do
     render
-    assert_select "tr>td", :text => 2.to_s, :count => 2
-    assert_select "tr>td", :text => 3.to_s, :count => 2
+    assert_select "tr>td", :text => "Project Name".to_s, :count => 2
+    assert_select "tr>td", :text => "".to_s, :count => 2
+    assert_select "tr>td", :text => "Description".to_s, :count => 2
+    assert_select "tr>td", :text => "Uid".to_s, :count => 2
+    assert_select "tr>td", :text => "User".to_s, :count => 2
   end
 end

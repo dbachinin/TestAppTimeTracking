@@ -1,12 +1,28 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Project name:</strong>
+  <%= @project.project_name %>
+</p>
+
+<p>
+  <strong>Tasks:</strong>
+  <%= @project.tasks %>
+</p>
+
+<p>
+  <strong>Description:</strong>
+  <%= @project.description %>
+</p>
+
+<p>
+  <strong>Uid:</strong>
+  <%= @project.uid %>
+</p>
 
 <p>
   <strong>User:</strong>
   <%= @project.user_id %>
-</p>
-
-<p>
-  <strong>Task:</strong>
-  <%= @project.tasks %>
 </p>
 
 <%= link_to 'Edit', edit_project_path(@project) %> |

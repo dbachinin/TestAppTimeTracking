@@ -1,11 +1,10 @@
 FactoryBot.define do
-  
   factory :project do
-    project_name "Test1"
-    user_id 1
-    tasks "1,2,3"
-    description "test description"
-    uid { SecureRandom.uuid }
+    project_name "MyString"
+    tasks ""
+    description "MyString"
+    uid "MyString"
+    user_id "MyString"
   end
-
+  
 end
