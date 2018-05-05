@@ -5,35 +5,41 @@ class ProjectsController < ApplicationController
   # GET /projects.json
   def index
     @projects = Project.all
+    @user = current_user
   end
 
   # GET /projects/1
   # GET /projects/1.json
   def show
+    @user = current_user
   end
 
   # GET /projects/new
   def new
     @project = Project.new
+    @user = current_user
   end
 
   # GET /projects/1/edit
   def edit
+    @user = current_user
   end
 
   # POST /projects
   # POST /projects.json
   def create
+    @user = current_user
     # @project = Project.new(project_params)
-    @project = current_user.project.build(project_params)
-    @project.tasks << params[:task]
+    @project = @user.project.build(project_params)
+    task = params[:project][:task]
+    @project.tasks.push(task)
     respond_to do |format|
       if @project.save
-        format.html { redirect_to @project, notice: 'Project was successfully created.' }
-        format.json { render :show, status: :created, location: @project }
+        format.html { redirect_to [@user,@project], notice: 'Project was successfully created.' }
+        format.json { render :show, status: :created, location: [@user,@project] }
       else
         format.html { render :new }
-        format.json { render json: @project.errors, status: :unprocessable_entity }
+        format.json { render json: [@user,@project].errors, status: :unprocessable_entity }
       end
     end
   end
@@ -41,13 +47,14 @@ class ProjectsController < ApplicationController
   # PATCH/PUT /projects/1
   # PATCH/PUT /projects/1.json
   def update
+    @user = current_user
     respond_to do |format|
       if @project.update(project_params)
-        format.html { redirect_to @project, notice: 'Project was successfully updated.' }
-        format.json { render :show, status: :ok, location: @project }
+        format.html { redirect_to [@user,@project], notice: 'Project was successfully updated.' }
+        format.json { render :show, status: :ok, location: [@user,@project] }
       else
         format.html { render :edit }
-        format.json { render json: @project.errors, status: :unprocessable_entity }
+        format.json { render json: [@user,@project].errors, status: :unprocessable_entity }
       end
     end
   end
@@ -55,9 +62,10 @@ class ProjectsController < ApplicationController
   # DELETE /projects/1
   # DELETE /projects/1.json
   def destroy
+    @user = current_user
     @project.destroy
     respond_to do |format|
-      format.html { redirect_to projects_url, notice: 'Project was successfully destroyed.' }
+      format.html { redirect_to user_projects_url(@user), notice: 'Project was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
@@ -70,6 +78,6 @@ class ProjectsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def project_params
-      params.require(:project).permit(:project_name, :tasks, :description, :uid, :user_id)
+      params.require(:project).permit(:project_name, :tasks, :description, :uid, :user_id, { :task => []})
     end
 end

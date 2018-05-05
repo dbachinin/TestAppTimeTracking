@@ -30,8 +30,8 @@
         <td><%= task.task_priority %></td>
         <td><%= task.time_estimate %></td>
         <td><%= task.coments %></td>
-        <td><%= task.user_id %></td>
-        <td><%= task.creator %></td>
+        <td><%= User.find(task.user_id).name if task.user_id %></td>
+        <td><%= User.find(task.creator).name %></td>
         <td><%= task.project_id %></td>
         <td><%= task.logs %></td>
         <td><%= task.teken_time %></td>

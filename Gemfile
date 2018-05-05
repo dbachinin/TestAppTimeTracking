@@ -33,6 +33,8 @@ gem 'jquery-rails'
 gem 'nested_form'
 
 gem 'simple_form'
+
+gem 'bootstrap-datepicker-rails'
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 4.0'
 # Use ActiveModel has_secure_password

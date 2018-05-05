@@ -41,7 +41,7 @@
 
 <p>
   <strong>Creator:</strong>
-  <%= @task.creator %>
+  <%= User.find(@task.creator).name %>
 </p>
 
 <p>

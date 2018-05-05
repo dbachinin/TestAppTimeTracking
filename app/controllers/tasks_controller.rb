@@ -5,19 +5,23 @@ class TasksController < ApplicationController
   # GET /tasks.json
   def index
     @tasks = Task.all
+    @user = current_user
   end
 
   # GET /tasks/1
   # GET /tasks/1.json
   def show
     @comments = Task.find(params[:id]).coments
+    @user = current_user
   end
 
   def edit_coments
     @comments = Task.find(params[:id]).coments
+    @user = current_user
   end
 
   def add_coments
+    @user = current_user
     @task = Task.find(params[:id])
     @coments = @task.coments
     @coment = params[:task][:coment]
@@ -25,6 +29,7 @@ class TasksController < ApplicationController
   end
 
   def add_logs
+    @user = current_user
     @logs = Task.find(params[:id]).logs    
   end
   # GET /tasks/new
@@ -35,17 +40,18 @@ class TasksController < ApplicationController
 
   # GET /tasks/1/edit
   def edit
+    @user = current_user
   end
 
   # POST /tasks
   # POST /tasks.json
   def create
+    @user = current_user
     @task = Task.new(task_params)
-    @coments = @task.coments
-    @coments.push(params[:task][:coment])
+    @task.coments.push(params[:task][:coment])
     @logs = @task.logs
     @logs.push(params[:task][:log])
-
+    @task.creator = @user.id.as_json.values[0]
     respond_to do |format|
       if @task.save
         format.html { redirect_to @task, notice: 'Task was successfully created.' }
@@ -74,6 +80,7 @@ class TasksController < ApplicationController
   # DELETE /tasks/1
   # DELETE /tasks/1.json
   def destroy
+    @user = current_user
     @task.destroy
     respond_to do |format|
       format.html { redirect_to tasks_url, notice: 'Task was successfully destroyed.' }

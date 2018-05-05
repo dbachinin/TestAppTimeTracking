@@ -5,6 +5,8 @@
        </li>
     <li class="nav-item">
       <a><%= link_to "Log out", destroy_session_path(:user), method: :delete, class: 'navbar-link'  %></a>
+      <a><%= link_to "Tasks", tasks_path, class: 'navbar-link' %></a>
+      <a><%= link_to "Projects", user_projects_path(@user) %></a>
     </li>
   </ul>
 

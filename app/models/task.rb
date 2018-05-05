@@ -9,8 +9,8 @@ class Task
   field :time_estimate, type: Time
   # field :coment, type: String
   field :coments, type: Array, default: []
-  field :user_id, type: Integer
-  field :creator, type: Integer
+  field :user_id, type: String
+  field :creator, type: String
   field :project_id, type: Integer
   # field :log, type: String
   field :logs, type: Array, default: []
