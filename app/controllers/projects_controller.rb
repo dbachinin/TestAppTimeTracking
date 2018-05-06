@@ -32,7 +32,7 @@ class ProjectsController < ApplicationController
     # @project = Project.new(project_params)
     @project = @user.project.build(project_params)
     task = params[:project][:task]
-    @project.tasks.push(task)
+    @project.tasks = task[1..-1]
     respond_to do |format|
       if @project.save
         format.html { redirect_to [@user,@project], notice: 'Project was successfully created.' }
@@ -48,6 +48,8 @@ class ProjectsController < ApplicationController
   # PATCH/PUT /projects/1.json
   def update
     @user = current_user
+    @project = Project.find(params[:id])
+    @project.tasks = params[:project][:task][1..-1]
     respond_to do |format|
       if @project.update(project_params)
         format.html { redirect_to [@user,@project], notice: 'Project was successfully updated.' }

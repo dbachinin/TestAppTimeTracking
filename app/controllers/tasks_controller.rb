@@ -1,6 +1,7 @@
 class TasksController < ApplicationController
   before_action :set_task, only: [:show, :edit, :update, :destroy]
   before_action :authenticate_user!
+  include DatepickerHelper
   # GET /tasks
   # GET /tasks.json
   def index
@@ -49,9 +50,11 @@ class TasksController < ApplicationController
     @user = current_user
     @task = Task.new(task_params)
     @task.coments.push(params[:task][:coment])
-    @logs = @task.logs
-    @logs.push(params[:task][:log])
+    @logs = @task.log
+    # @logs.push(params[:task][:log])
     @task.creator = @user.id.as_json.values[0]
+    @task.date_range = (Date.parse(@task.estimate_time)..Date.parse(@task.teken_time))
+    @task.user_id = params[:task][:user_id][1..-1]
     respond_to do |format|
       if @task.save
         format.html { redirect_to @task, notice: 'Task was successfully created.' }
@@ -83,7 +86,7 @@ class TasksController < ApplicationController
     @user = current_user
     @task.destroy
     respond_to do |format|
-      format.html { redirect_to tasks_url, notice: 'Task was successfully destroyed.' }
+      format.html { redirect_to tasks_path, notice: 'Task was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
@@ -96,6 +99,6 @@ class TasksController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def task_params
-      params.require(:task).permit(:theme, :description, :date_range, :task_type, :task_priority, :tame_estimate, :coments, :user_id, :creator, :project_id, :logs, :teken_time, :coment, :log)
+      params.require(:task).permit(:theme, :description, :date_range, :task_type, :task_priority, :estimate_time, :coments, :user_id, :creator, :project_id, :logs, :teken_time, :coment, :log)
     end
 end

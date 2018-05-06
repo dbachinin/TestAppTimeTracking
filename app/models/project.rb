@@ -7,4 +7,7 @@ class Project
   field :user_id, type: String
   attr_accessor :task
   belongs_to :user
+  after_create do
+  	self.tasks.compact!
+  end
 end

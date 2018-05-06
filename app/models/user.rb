@@ -24,7 +24,9 @@ class User
   field :last_sign_in_at,    type: Time
   field :current_sign_in_ip, type: String
   field :last_sign_in_ip,    type: String
-
+  
+  field :avatar,             type: String
+  field :admin,              type: Mongoid::Boolean
   validates :name, presence: true, uniqueness: {case_sensitive: false}
 
   validates_format_of :name, with: /^[a-zA-Z0-9_\.]*$/, multiline: true
