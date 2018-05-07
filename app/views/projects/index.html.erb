@@ -17,4 +17,4 @@
 </div>
 <hr>
 
-<%= link_to 'New Project', new_user_project_path(@user, @project) %>
+<%= link_to 'New Project', new_user_project_path(@user, @project) if @user.admin%>

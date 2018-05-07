@@ -4,8 +4,13 @@ class ProjectsController < ApplicationController
   # GET /projects
   # GET /projects.json
   def index
-    @projects = Project.all
-    @user = current_user
+    if current_user.admin
+      @projects = Project.all
+      @user = current_user
+    else
+      @user = current_user
+      @projects = Task.where(user_id: @user.id.as_json.values[0]).map{|i| i.project[0]}.reject(&:nil?)
+    end
   end
 
   # GET /projects/1
