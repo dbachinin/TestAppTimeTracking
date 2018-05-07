@@ -5,7 +5,7 @@ class User
   devise :database_authenticatable, :registerable, 
   :recoverable, :rememberable, :trackable, :validatable, authentication_keys: [:name]
   after_initialize :create_name, if: :new_record?
-  before_validation :get_logname, unless: :new_record?
+  after_initialize :get_logname, unless: :new_record?
   ## Database authenticatable
   field :email,              type: String, default: ""
   field :encrypted_password, type: String, default: ""
@@ -30,7 +30,7 @@ class User
   validates :name, presence: true, uniqueness: {case_sensitive: false}
 
   validates_format_of :name, with: /^[a-zA-Z0-9_\.]*$/, multiline: true
-
+  private
   def create_name
     if self.name.blank?
       email = self.email.split(/@/)
@@ -47,7 +47,7 @@ class User
   def get_logname
     if self.name.include?('@')
       email = self.name 
-      user = User.where(email: email).first
+      user = User.find_by(email: email)
       if user
         self.name = user.name
         self.email = email

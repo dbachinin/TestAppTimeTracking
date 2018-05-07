@@ -19,8 +19,13 @@ class ProjectsController < ApplicationController
 
   # GET /projects/new
   def new
-    @project = Project.new
-    @user = current_user
+    if current_user.admin
+      @project = Project.new
+      @user = current_user
+    else
+      flash.notice = "You dont have permisions"
+      redirect_to user_projects_path(current_user)
+    end
   end
 
   # GET /projects/1/edit
