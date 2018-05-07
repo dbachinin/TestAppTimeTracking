@@ -11,7 +11,10 @@ class ProjectsController < ApplicationController
   # GET /projects/1
   # GET /projects/1.json
   def show
+    @task_type = [["Error", 0],["Cosmetic", 1],["Exception", 2], ["Teature", 3],["Task", 4], ["Usability", 5], ["Performance", 6]]
+    @task_priority = [["Emergency", 0], ["Critical", 1], ["Serious", 2], ["Regular", 3], ["Low", 4]]
     @user = current_user
+    @tasks = Task.where(project_id: @project.id.as_json.values[0])
   end
 
   # GET /projects/new
@@ -32,14 +35,14 @@ class ProjectsController < ApplicationController
     # @project = Project.new(project_params)
     @project = @user.project.build(project_params)
     task = params[:project][:task]
-    @project.tasks = task[1..-1]
+    # @project.tasks = task[1..-1]
     respond_to do |format|
       if @project.save
-        format.html { redirect_to [@user,@project], notice: 'Project was successfully created.' }
-        format.json { render :show, status: :created, location: [@user,@project] }
+        format.html { redirect_to @project, notice: 'Project was successfully created.' }
+        format.json { render :show, status: :created, location: @project }
       else
         format.html { render :new }
-        format.json { render json: [@user,@project].errors, status: :unprocessable_entity }
+        format.json { render json: @project.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -75,7 +78,11 @@ class ProjectsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_project
-      @project = Project.find(params[:id])
+      if params[:uid]&.gsub(/\s+/, "")&.length == 7
+        @project = Project.find_by(uid: params[:uid].gsub(/\s+/, ""))
+      else
+        @project = Project.find(params[:uid])
+      end
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

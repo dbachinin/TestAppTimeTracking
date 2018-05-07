@@ -1,12 +1,20 @@
 class TasksController < ApplicationController
   before_action :set_task, only: [:show, :edit, :update, :destroy]
   before_action :authenticate_user!
-  include DatepickerHelper
+  before_action :set_arrays
+
+  def set_arrays
+    @task_type = [["Error", 0],["Cosmetic", 1],["Exception", 2], ["Teature", 3],["Task", 4], ["Usability", 5], ["Performance", 6]]
+    @task_priority = [["Emergency", 0], ["Critical", 1], ["Serious", 2], ["Regular", 3], ["Low", 4]]
+  end
+
   # GET /tasks
   # GET /tasks.json
   def index
-    @tasks = Task.all
+    # @tasks = Task.all
     @user = current_user
+    @project = Project.find(params[:project_uid])
+    @tasks = Task.where(project_id: @project.id)
   end
 
   # GET /tasks/1
@@ -14,6 +22,7 @@ class TasksController < ApplicationController
   def show
     @comments = Task.find(params[:id]).coments
     @user = current_user
+    @project = Task.find(params[:id]).project[0]
   end
 
   def edit_coments
@@ -35,8 +44,10 @@ class TasksController < ApplicationController
   end
   # GET /tasks/new
   def new
-    @task = Task.new
     @user = current_user
+    @project = Project.find_by(uid: params[:project_uid])
+    @task = @project.build_task
+
   end
 
   # GET /tasks/1/edit
@@ -48,13 +59,15 @@ class TasksController < ApplicationController
   # POST /tasks.json
   def create
     @user = current_user
-    @task = Task.new(task_params)
+    @project = Project.find(params[:project_uid])
+    @task = @project.build_task(task_params)
     @task.coments.push(params[:task][:coment])
     @logs = @task.log
     # @logs.push(params[:task][:log])
     @task.creator = @user.id.as_json.values[0]
     @task.date_range = (Date.parse(@task.estimate_time)..Date.parse(@task.teken_time))
     @task.user_id = params[:task][:user_id][1..-1]
+    @task.project_id = @project.id.as_json.values[0]
     respond_to do |format|
       if @task.save
         format.html { redirect_to @task, notice: 'Task was successfully created.' }

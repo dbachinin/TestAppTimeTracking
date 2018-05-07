@@ -46,7 +46,7 @@
 
 <p>
   <strong>Project:</strong>
-  <%= @task.project_id %>
+  <%= Project.find(@task.project_id) %>
 </p>
 
 <p>
@@ -58,6 +58,6 @@
   <strong>Teken time:</strong>
   <%= @task.teken_time %>
 </p>
-
+<%= console %>
 <%= link_to 'Edit', edit_task_path(@task) %> |
-<%= link_to 'Back', tasks_path %>
+<%= link_to 'Back', project_tasks_path(Project.find(@task.project_id)) %>

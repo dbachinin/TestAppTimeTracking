@@ -11,12 +11,20 @@
   </head>
 
   <body>
-    <%= render 'layouts/header'%>
+
+<% if user_signed_in? %>
+   <%= render 'layouts/header'%>
+<% end %>
+  </br>
+  </br>
+  </br>
     <div class="container">
+      <div class="conent">
         <% flash.each do |name, msg| %>
             <%= content_tag(:div, msg, class: "alert alert-info") %>
         <% end %>
         <%= yield %>
+        </div>
     </div>
   </body>
 </html>

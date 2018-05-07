@@ -7,7 +7,7 @@
 
 <p>
   <strong>Tasks:</strong>
-  <%= @project.tasks %>
+  <%= @tasks.map { |e|e.theme  }.join(',') %>
 </p>
 
 <p>
@@ -24,6 +24,8 @@
   <strong>User:</strong>
   <%= @project.user_id %>
 </p>
+
+ <%= render :template => 'tasks/index' %>
 
 <%= link_to 'Edit', edit_project_path(@project) %> |
 <%= link_to 'Back', user_projects_path(@user) %>

@@ -11,7 +11,7 @@ class Task
   field :coments, type: Array, default: []
   field :user_id, type: Array, default: []
   field :creator, type: String
-  field :project_id, type: Integer
+  field :project_id, type: String
   # field :log, type: String
   field :logs, type: Array, default: []
   field :teken_time, type: String
@@ -24,5 +24,7 @@ class Task
   #   self.logs << self.log
   #   self.coments << self.coment
   # end
+  has_many :project, autosave: true
+  accepts_nested_attributes_for :project, allow_destroy: true
 
 end

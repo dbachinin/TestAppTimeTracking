@@ -58,7 +58,8 @@ class User
   end
   
   has_many :project, autosave: true
-  accepts_nested_attributes_for :project, allow_destroy: true
+  has_many :task, autosave: true
+  accepts_nested_attributes_for :project, :task, allow_destroy: true
   # accepts_nested_attributes_for :project
   # attr_accessor :name, :email, :password, :password_confirmation, :remember_me
 

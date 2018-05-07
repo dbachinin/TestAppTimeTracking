@@ -10,12 +10,12 @@ Rails.application.routes.draw do
   get 'people/destroy'
 
     devise_for :users, :path => 'users'
-    resources :users do
-    	resources :projects, param: :uid, shallow: true #do
-      #   resources :tasks, shallow: true
-      # end
+    resources :users, shallow: true do
+    	resources :projects, param: :uid do
+        resources :tasks
+      end
   	end
-  resources :tasks
+  # resources :tasks
   # get 'users/:id/projects/:id', to: 'projects#show', as: 'project'
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
   root to: "projects#index"

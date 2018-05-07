@@ -19,15 +19,15 @@
 
 </script>
 
-<%= simple_form_for(@task) do |f| %>
+<%= simple_form_for([@project,@task]) do |f| %>
   <%= f.error_notification %>
   <%= f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present? %>
 
   <div class="form-inputs">
     <%= f.input :theme %>
     <%= f.input :user_id, collection: User.all.map{|i| [i.name, i.id.as_json.values[0]]}, input_html: { multiple: true } %>
-    <%= f.input :task_type, collection: [["Error", 0],["Cosmetic", 1],["Exception", 2], ["Teature", 3],["Task", 4], ["Usability", 5], ["Performance", 6]] %>
-    <%= f.input :task_priority, collection: [["Emergency", 0], ["Critical", 1], ["Serious", 2], ["Regular", 3], ["Low", 4]] %>
+    <%= f.input :task_type, collection: @task_type %>
+    <%= f.input :task_priority, collection: @task_priority %>
     <%= f.input :description %>
     <%= f.input :coment %>
     <div class="input-daterange input-group" id="datepicker">
