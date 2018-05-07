@@ -22,9 +22,9 @@
         <td><%= project.description %></td>
         <td><%= project.uid %></td>
         <td><%= project.user_id %></td>
-        <td><%= link_to 'Show', user_project_path(@user, project) %></td>
-        <td><%= link_to 'Edit', edit_user_project_path(@user,project) %></td>
-        <td><%= link_to 'Destroy', [@user,project], method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= link_to 'Show',project_path(project.uid) %></td>
+        <td><%= link_to 'Edit', edit_project_path(project.uid) %></td>
+        <td><%= link_to 'Destroy', project, method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>
   </tbody>
@@ -33,3 +33,18 @@
 <br>
 
 <%= link_to 'New Project', new_user_project_path(@user, @project) %>
+
+<hr>
+<div class="container">
+  <div class="row">
+    <% @projects.each do |project| %>
+          <div class="col-sm-3">
+            <div class="well"> 
+              <h3 class="text-center"><%= link_to "#{project.uid}", project_path(project.uid) %></h3>
+              <h1 class="text-center"><%= project.project_name %></h1>
+            </div>
+          </div>
+          <% end %>
+     </div>  
+</div>
+<hr>
