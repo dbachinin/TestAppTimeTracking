@@ -155,11 +155,11 @@ test:
         read:
           mode: :primary
         max_pool_size: 1
-        
+
 production:
     clients:
         default:
           hosts: ds217360.mlab.com:17360
             database: heroku_9rzh50nd
-            username: heroku_9rzh50nd
+            user: heroku_9rzh50nd
             password: flihbgtqkvtdma2dm223g207fn
