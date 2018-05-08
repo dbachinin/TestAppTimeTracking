@@ -1,6 +1,8 @@
 class Task
   include Mongoid::Document
   include Mongoid::Attributes::Dynamic
+  validates :theme, :task_type, :task_priority, presence: true
+
   field :theme, type: String
   field :description, type: String, default: ""
   field :date_range, type: Range
@@ -26,7 +28,5 @@ class Task
   # end
   has_many :project, autosave: true
   accepts_nested_attributes_for :project, allow_destroy: true
-  validates :teken_time, presence: true
-  validates :estimate_time, presence: true
 
 end
