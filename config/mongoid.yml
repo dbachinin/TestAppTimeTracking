@@ -155,11 +155,7 @@ test:
         read:
           mode: :primary
         max_pool_size: 1
-
 production:
     clients:
         default:
-            uri: mongodb://heroku_9rzh50nd:flihbgtqkvtdma2dm223g207fn@ds217360.mlab.com:17360/heroku_9rzh50nd
-        options:
-            skip_version_check: true
-        safe: true
+          url: <%= ENV['MONGODB_URI'] %>
