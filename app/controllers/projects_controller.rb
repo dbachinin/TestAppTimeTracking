@@ -9,7 +9,7 @@ class ProjectsController < ApplicationController
       @user = current_user
     else
       @user = current_user
-      @projects = Task.where(user_id: @user.id.as_json.values[0]).map{|i| i.project[0]}.reject(&:nil?)
+      @projects = Project.find(Task.where(user_id: @user.id.as_json.values).map{|i|i.project_id})
     end
   end
 
@@ -43,7 +43,7 @@ class ProjectsController < ApplicationController
   def create
     @user = current_user
     # @project = Project.new(project_params)
-    @project = @user.project.build(project_params)
+    @project = @user.project.create(project_params)
     task = params[:project][:task]
     # @project.tasks = task[1..-1]
     respond_to do |format|

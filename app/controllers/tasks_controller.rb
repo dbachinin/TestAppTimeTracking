@@ -2,10 +2,18 @@ class TasksController < ApplicationController
   before_action :set_task, only: [:show, :edit, :update, :destroy]
   before_action :authenticate_user!
   before_action :set_arrays
+  add_flash_types :info, :success, :warning, :danger
 
   def set_arrays
     @task_type = [["Error", 0],["Cosmetic", 1],["Exception", 2], ["Teature", 3],["Task", 4], ["Usability", 5], ["Performance", 6]]
     @task_priority = [["Emergency", 0], ["Critical", 1], ["Serious", 2], ["Regular", 3], ["Low", 4]]
+  end
+  def self_user?(user)
+    if user.include?(current_user.id.as_json.values[0]) 
+      true
+    else
+      false
+    end
   end
 
   # GET /tasks
@@ -46,7 +54,7 @@ class TasksController < ApplicationController
   def new
     @user = current_user
     @project = Project.find_by(uid: params[:project_uid])
-    @task = @project.build_task
+    @task = Task.new
 
   end
 
@@ -60,7 +68,7 @@ class TasksController < ApplicationController
   def create
     @user = current_user
     @project = Project.find(params[:project_uid])
-    @task = @project.build_task(task_params)
+    @task = Task.create(task_params)
     @task.coments.push(params[:task][:coment])
     @logs = @task.log
     # @logs.push(params[:task][:log])
@@ -82,14 +90,20 @@ class TasksController < ApplicationController
   # PATCH/PUT /tasks/1
   # PATCH/PUT /tasks/1.json
   def update
-    respond_to do |format|
-      if @task.update(task_params)
-        format.html { redirect_to @task, notice: 'Task was successfully updated.' }
-        format.json { render :show, status: :ok, location: @task }
-      else
-        format.html { render :edit }
-        format.json { render json: @task.errors, status: :unprocessable_entity }
+    @task.user_id = params[:task][:user_id][1..-1]
+    if @task.user_id.include?(current_user.id.as_json.values[0]) or current_user.admin
+      
+      respond_to do |format|
+        if @task.update(task_params)
+          format.html { redirect_to @task, info: 'Task was successfully updated.' }
+          format.json { render :show, status: :ok, location: @task }
+        else
+          format.html { render :edit }
+          format.json { render json: @task.errors, status: :unprocessable_entity }
+        end
       end
+    else
+      redirect_to @task, info: 'Sorry. You mast by owner of this task. Call you administrator'
     end
   end
 

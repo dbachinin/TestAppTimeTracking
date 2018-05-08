@@ -36,7 +36,7 @@
 
 <p>
   <strong>User:</strong>
-  <%= @task.user_id %>
+  <%= User.find(@task.user_id).map{|i|i.name} %>
 </p>
 
 <p>
@@ -58,6 +58,5 @@
   <strong>Teken time:</strong>
   <%= @task.teken_time %>
 </p>
-<%= console %>
 <%= link_to 'Edit', edit_task_path(@task) %> |
 <%= link_to 'Back', project_tasks_path(Project.find(@task.project_id)) %>

@@ -16,7 +16,7 @@ class Task
   field :logs, type: Array, default: []
   field :teken_time, type: String
   attr_accessor :coment, :log
-  
+  # belongs_to :user
   after_initialize do
     self.user_id.compact!
   end
@@ -26,5 +26,7 @@ class Task
   # end
   has_many :project, autosave: true
   accepts_nested_attributes_for :project, allow_destroy: true
+  validates :teken_time, presence: true
+  validates :estimate_time, presence: true
 
 end

@@ -8,10 +8,11 @@
           <div class="col-sm-3">
             <div class="well"> 
               <h3 class="text-center"><%= link_to "#{task.theme}", task %></h3>
-              <a class="text-center"><b>User name: </b><%= p "#{User.find(task.creator).name}\n" %></a>
+              <a class="text-center"><b>Executors: </b><%= p "#{User.find(task.user_id).map{|i|i.name}.join(',')}\n" %></a>
             </br>
-              <a class="text-center"><b>Task type: </b><%= Hash[@task_type].index(task.task_type) %></a></br>
+              <a class="text-center"><b>Task Type: </b><%= Hash[@task_type].index(task.task_type) %></a></br>
               <a class="text-center"><b>Task Priroity: </b><%= Hash[@task_priority].index(task.task_priority) %></a></br>
+              <a class="text-bottom"><b>Task Owner: </b><%= User.find(task.creator).name %></a></br>
             </div>
           </div>
           <% end %>
