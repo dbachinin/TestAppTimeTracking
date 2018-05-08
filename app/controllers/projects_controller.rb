@@ -9,7 +9,7 @@ class ProjectsController < ApplicationController
       @user = current_user
     else
       @user = current_user
-      @projects = Project.find(Task.where(user_id: @user.id.as_json.values).map{|i|i.project_id})
+      @projects = Project.find(Task.where(user_id: @user.id.as_json.values[0]).map{|i|i.project_id})
     end
   end
 
