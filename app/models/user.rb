@@ -6,6 +6,7 @@ class User
   :recoverable, :rememberable, :trackable, :validatable, authentication_keys: [:name]
   after_initialize :create_name, if: :new_record?
   after_initialize :get_logname, unless: :new_record?
+  before_save :add_admin
   ## Database authenticatable
   field :email,              type: String, default: ""
   field :encrypted_password, type: String, default: ""
@@ -30,6 +31,11 @@ class User
   validates :name, presence: true, uniqueness: {case_sensitive: false}
 
   validates_format_of :name, with: /^[a-zA-Z0-9_\.]*$/, multiline: true
+  def add_admin
+    unless User.first
+      self.admin = 1
+    end
+  end
   private
   def create_name
     if self.name.blank?
