@@ -8,7 +8,7 @@
 <li class="nav-item">
     <a><%= link_to "Projects", user_projects_path(@user), class: "nav-link" if @user&.id %></a>
 </li>
-<% if @project&.project_name %>
+<% if (@task) %>
 <li class="nav-item">
   <a><%= link_to "Tasks", project_tasks_path(@project), class: 'nav-link' %></a>
 </li>
