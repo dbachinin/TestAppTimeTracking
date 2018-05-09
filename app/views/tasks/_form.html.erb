@@ -59,9 +59,9 @@
       </p>
       <hr>
     <div class="input-daterange input-group" id="datepicker">
-      <%= f.text_field :estimate_time,  class: "input-sm form-control"%>
+      <%= f.text_field :estimate_time, value: Date.today, class: "input-sm form-control"%>
       <div class="input-group-addon">to</div>
-      <%= f.text_field :teken_time,  class: "input-sm form-control"%>
+      <%= f.text_field :teken_time, value: Date.tomorrow, class: "input-sm form-control"%>
     </div>
     <hr>
     <div class="col-sm4"><%= f.button :submit, "Save", :class => 'btn btn-success btn-mini' %></div>
