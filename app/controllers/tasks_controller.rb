@@ -76,8 +76,10 @@ class TasksController < ApplicationController
     @task.date_range = (Date.parse(@task.estimate_time)..Date.parse(@task.teken_time))
     @task.user_id = params[:task][:user_id][1..-1]
     @task.project_id = @project.id.as_json.values[0]
+    old_task = @task
     respond_to do |format|
       if @task.save
+        TasksMailer.submitted(@task.user_id,@task,old_task).deliver_now
         format.html { redirect_to @task, notice: 'Task was successfully created.' }
         format.json { render :show, status: :created, location: @task }
       else
@@ -90,11 +92,13 @@ class TasksController < ApplicationController
   # PATCH/PUT /tasks/1
   # PATCH/PUT /tasks/1.json
   def update
+    old_task = Task.find(params[:id])
     params[:task][:user] ? @task.user_id = params[:task][:user].split : @task.user_id = params[:task][:user_id][1..-1]
     if @task.user_id.include?(current_user.id.as_json.values[0]) or current_user.admin
       @task.coments.push(params[:task][:coment]) if params[:task][:coment]
       respond_to do |format|
         if @task.update(task_params)
+          TasksMailer.submitted(@task.user_id,@task,old_task).deliver_now
           format.html { redirect_to @task, info: 'Task was successfully updated.' }
           format.json { render :show, status: :ok, location: @task }
         else

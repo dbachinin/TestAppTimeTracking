@@ -30,10 +30,19 @@ Rails.application.configure do
   #config.action_mailer.raise_delivery_errors = false
   config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
   config.action_mailer.delivery_method = :smtp
-  config.action_mailer.perform_deliveries = false
+  config.action_mailer.perform_deliveries = true
   config.action_mailer.raise_delivery_errors = true
   config.action_mailer.default :charset => "utf-8"
   config.action_mailer.perform_caching = false
+  config.action_mailer.smtp_settings = {
+  :address => "smtp.mail.yahoo.com",
+  :port => 587,
+  :domain => "smtp.mail.yahoo.com",
+  :user_name => 'dbachinin@yahoo.com',
+  :password => ENV['YA_PASS'] ,
+  :enable_starttls_auto => true,
+  :authentication => :plain
+  }
 
   # Print deprecation notices to the Rails logger.
   config.active_support.deprecation = :log

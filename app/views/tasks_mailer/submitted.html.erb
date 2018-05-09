@@ -1,5 +1,157 @@
-<h1>Tasks#submitted</h1>
+<div class="mail-Message-Body-Content">
+  <% front_color = ["4d8400", "847900", "844400", "842100", "510000"]%>
+  <% back_color = ["e6f6cf", "f6f4cf", "f6dfcf", "f98989", "b74040"] %>
+  <%     File.write('/tmp/old',@old_task )
+    File.write('/tmp/task',@task )%>
+  <% unless @old_task%>
+    <p style="font-size:14px;font-family:sans-serif;color:#000000;margin:14px 0 19px 44px;">
+                New task «<span style="font-weight:bold;"><%= Hash[@task_type].key(@task.task_type) %></span>» in project <span style="font-weight:bold;"><%= Project.find(@task.project_id).project_name %></span>
+    </p>
+    <% else %>
+    <p style="font-size:14px;font-family:sans-serif;color:#000000;margin:14px 0 19px 44px;">
 
+        Task type «<span style="font-weight:bold;"><%= Hash[@task_type].key(@task.task_type) %></span>» can be updated user <span style="font-weight:bold;"><%= User.find(@task.creator).name%></span>
+        in project <%= Project.find(@task.project_id).project_name %>
+    </p>
+    <% end %>
+    <table style="border-collapse:collapse;width:100%;table-layout:fixed;">
+    <tbody><tr>
+        <td style="padding:12px 15px;background:#f0f0f0;">
+                <table style="border-collapse:collapse;border:0;width:100%;">
+        <tbody><tr>
+            <td style="vertical-align:top;font-family:sans-serif;font-size:13px;width:26px;">
+            </td>
+            <td style="vertical-align:top;font-family:sans-serif;font-size:13px;">
+
+    <a title="                Task created user <%= User.find(@task.creator).name %> 
+              " style="font-size:15px;color:#1466c6;text-decoration:none;" href="<%= task_url(@task)%>" class="daria-goto-anchor" target="_blank" rel="noopener noreferrer">
+              <% if @old_task.theme == @task.theme%>
+              <%= @task.theme %>
+              <%else%>
+              <%= @old_task.theme %> <span style="margin-left:5px;"> → </span> <%= @task.theme %>
+              <%end %>
+    </a>
+            </td>
+            <td style="padding-left:5px;font-size:11px;font-family:sans-serif;text-align:right;color:#888888;">
+                    create: <%= User.find(@task.creator).name %>
+            </td>
+        </tr>
+    </tbody></table>
+    <div style="margin:14px 0 14px 29px;">
+    	<% if @old_task.description == @task.description%>
+    	    <%= @task.description %>
+    	<%else%>
+    	    <%= @old_task.description %>  <span style="margin-left:5px;"> → </span> <%= @task.description %>
+    	<%end %>
+    </div>
+        </td>
+    </tr>
+</tbody></table>
+    <div style="margin-top:12px;">    <table style="width:100%;border-collapse:collapse;border:0;">
+    <tbody><tr>
+        <td colspan="2" style="width:116px;padding:10px 0 10px 44px;vertical-align:top;color:#888888;font-family:sans-serif;font-size:13px;">
+            <hr style="height:1px;max-height:1px;border:0;background:#d9d9d9;margin:19px 0 15px;">
+            <table>
+                    <tbody><tr>
+                        <td style="width:116px;vertical-align:top;padding:5px 10px 5px 0;font-family:sans-serif;font-size:13px;color:#888888;">
+                            Priority
+                        </td>
+                        <td style="vertical-align:top;padding:5px;font-family:sans-serif;font-size:13px;">
+                        	<% if @old_task.task_priority == @task.task_priority%>
+                            <div style="padding:2px 4px;font-size:90%;background-color:#<%= back_color.reverse[@task.task_priority]%> !important;">
+                                <div style="overflow:hidden;color:#<%= front_color.reverse[@task.task_priority]%> !important;">
+                                    <%= Hash[@task_priority].key(@task.task_priority) %>
+                                </div>
+                            </div>
+                            <% else %>
+                            <div style="padding:2px 4px;font-size:90%;background-color:#<%= back_color.reverse[@task.task_priority]%> !important;">
+                                <div style="overflow:hidden;color:#<%= front_color.reverse[@task.task_priority]%> !important;">
+                                    <%= Hash[@task_priority].key(@old_task.task_priority) %>
+                                </div>
+                            </div>
+                             <span style="margin-left:5px;"> → </span>
+                            <div style="padding:2px 4px;font-size:90%;background-color:#<%= back_color.reverse[@task.task_priority]%> !important;">
+                                <div style="overflow:hidden;color:#<%= front_color.reverse[@task.task_priority]%> !important;">
+                                    <%= Hash[@task_priority].key(@task.task_priority) %>
+                                </div>
+                            </div>
+                            <%end%>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width:116px;vertical-align:top;padding:5px 10px 5px 0;font-family:sans-serif;font-size:13px;color:#888888;">
+                            Condition
+                        </td>
+                        <td style="vertical-align:top;padding:5px;font-family:sans-serif;font-size:13px;">
+                            <div style="padding:2px 4px;font-size:90%;">
+                                <div style="overflow:hidden;">
+                                	<% if @old_task.logs == @task.logs%>
+                                    <%= @task.logs.last %>
+                                    <%else%>
+                                    <%= @old_task.logs.last %> <span style="margin-left:5px;"> → </span> <%= @task.logs.last %>
+                                    <%end%>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width:116px;vertical-align:top;padding:5px 10px 5px 0;font-family:sans-serif;font-size:13px;color:#888888;">
+                            Contributor
+                        </td>
+                        <td style="vertical-align:top;padding:5px;font-family:sans-serif;font-size:13px;">
+                            <div style="padding:2px 4px;font-size:90%;">
+                                <div style="overflow:hidden;">
+                                	<% if @old_task.user_id == @task.user_id%>
+                                    <%= User.find(@task.user_id).map { |e|e.name  }.join(',')%>
+                                    <%else%>
+                                    <%= User.find(@old_task.user_id).map { |e|e.name  }.join(',')%><span style="margin-left:5px;"> → </span><%= User.find(@task.user_id).map { |e|e.name  }.join(',')%>
+                                    <% end %>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width:116px;vertical-align:top;padding:5px 10px 5px 0;font-family:sans-serif;font-size:13px;color:#888888;">
+                            Type
+                        </td>
+                        <td style="vertical-align:top;padding:5px;font-family:sans-serif;font-size:13px;">
+                            <div style="padding:2px 4px;font-size:90%;">
+                                <div style="overflow:hidden;">
+                                	<% if @old_task.task_type == @task.task_type%>
+                                    <%= Hash[@task_type].key(@task.task_type) %>
+                                    <%else%>
+                                    <%= Hash[@task_type].key(@task.task_type) %><span style="margin-left:5px;"> → </span><%= User.find(@task.user_id).map { |e|e.name  }.join(',')%>
+                                    <%end%>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                         <td style="width:116px;vertical-align:top;padding:5px 10px 5px 0;font-family:sans-serif;font-size:13px;color:#888888;">
+                            Days from deadline
+                        </td>
+                        <td style="vertical-align:top;padding:5px;font-family:sans-serif;font-size:13px;">
+                            <div style="padding:2px 4px;font-size:90%;">
+                                    <div style="overflow:hidden;">
+                                      <%= Date.parse(@task.date_range.max.to_s).mjd - Date.parse(@task.date_range.min.to_s).mjd %>
+                                    </div>
+                            </div>
+                        </td>
+                    </tr>
+            </tbody></table>
+        </td>
+    </tr>
+
+<tr>
+    <td style="width:116px;padding:10px 0 10px 44px;vertical-align:top;color:#888888;font-family:sans-serif;font-size:13px;">Description</td>
+    <td style="padding:10px 0 10px 10px;vertical-align:top;font-family:sans-serif;font-size:13px;">
+            <%= @task.description %>
+    </td>
+</tr>
+
+
+    </tbody></table>
+    
 <p>
-  <%= @greeting %>, find me in app/views/tasks_mailer/submitted.html.erb
+<%= @task.theme %>
 </p>

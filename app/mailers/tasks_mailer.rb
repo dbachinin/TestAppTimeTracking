@@ -5,9 +5,21 @@ class TasksMailer < ApplicationMailer
   #
   #   en.tasks_mailer.submitted.subject
   #
-  def submitted
-    @greeting = "Hi"
+  def submitted(user,task,old_task)
+    @user = user
+    @task = task
+    @old_task = old_task
+	@task_type = [["Error", 0],["Cosmetic", 1],["Exception", 2], ["Teature", 3],["Task", 4], ["Usability", 5], ["Performance", 6]]
+	@task_priority = [["Emergency", 0], ["Critical", 1], ["Serious", 2], ["Regular", 3], ["Low", 4]]
 
-    mail to: "to@example.org"
+    User.find(@task.user_id).each do |i|
+    	mail(to: i.email, subject: "TimeTracking for #{task.theme}")
+    end
+    
+  end
+  def messages()
+  	User.find(@task.user_id).each do |i|
+  		mail(to: i.email, subject: "TimeTracking for #{task.theme}")
+  	end
   end
 end
