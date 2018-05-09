@@ -17,7 +17,6 @@
         <div class="card-header"><b>Coments:</b></div>
           <%= f.input :coment, as: :text, label: false %>
           <%= f.hidden_field :description, value: @task.description  %>
-          <div class="col-sm4"><%= f.button :submit, "Add Coment", :class => 'btn btn-success btn-mini' %></div>
           <hr>
             <% i = 0;@task.coments.reject(&:empty?).reverse.each do |comment| %>
 
