@@ -1,62 +1,61 @@
+<%= simple_form_for(@task) do |f| %>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-sm">
+    <div class="card">
+        <div class="card-header"><b>Coments:</b></div>
+          <%= f.input :coment, as: :text %>
+          <%= f.hidden_field :theme, value: @task.theme  %>
+          <%= f.hidden_field :user, value: @task.user_id  %>
+          <%= f.hidden_field :task_type, value: @task.task_type  %>
+          <%= f.hidden_field :task_priority, value: @task.task_priority  %>
+          <%= f.hidden_field :description, value: @task.description  %>
+          <div class="col-sm4"><%= f.button :submit, :class => 'btn btn-success btn-mini' %></div>
+          <hr>
+            <% @task.coments.reverse.each do |comment| %>
+              <div class="card-body"><%= comment %></div>
+            <% end %>
 
-<p>
-  <strong>Theme:</strong>
-  <%= @task.theme %>
-</p>
+        <% end %>
+      </div>
+    </div>
+    <div class="col-sm-4">
+      <p>
+        <h3><strong>Project: <%= Project.find(@task.project_id).project_name %> </br>&emsp;Task: <%= @task.theme %></strong></h3>
+      </p>
+      <hr>
+      <p>
+        <%= @task.description %>
+      </p>
+      <hr>
+      <p>
+        <strong>Task type:</strong>
+        <%= Hash[@task_type].index(@task.task_type) %>
+      </p>
+      <hr>
+      <p>
+        <strong>Task priority:</strong>
+        <%= Hash[@task_priority].index(@task.task_priority) %>
+      </p>
 
-<p>
-  <strong>Description:</strong>
-  <%= @task.description %>
-</p>
+      <hr>
+      <div class="card">
+        <div class="card-header"><b>Users:</b></div>
+        <% User.find(@task.user_id).each do |user| %>
+        <div class="card-body"><%= user.name %></div>
+        <%end%>
+      </div>
 
-<p>
-  <strong>Date range:</strong>
-  <%= @task.date_range %>
-</p>
+      <hr>
+      <p>
+        <strong>Logs:</strong>
+        <%= @task.logs %>
+      </p>
+    </div>
+  </div>
 
-<p>
-  <strong>Task type:</strong>
-  <%= @task.task_type %>
-</p>
 
-<p>
-  <strong>Task priority:</strong>
-  <%= @task.task_priority %>
-</p>
+<%=console%>
 
-<p>
-  <strong>Tame estimate:</strong>
-  <%= @task.estimate_time %>
-</p>
-
-<p>
-  <strong>Coments:</strong>
-  <%= @task.coments %>
-</p>
-
-<p>
-  <strong>User:</strong>
-  <%= User.find(@task.user_id).map{|i|i.name} %>
-</p>
-
-<p>
-  <strong>Creator:</strong>
-  <%= User.find(@task.creator).name %>
-</p>
-
-<p>
-  <strong>Project:</strong>
-  <%= Project.find(@task.project_id) %>
-</p>
-
-<p>
-  <strong>Logs:</strong>
-  <%= @task.logs %>
-</p>
-
-<p>
-  <strong>Teken time:</strong>
-  <%= @task.teken_time %>
-</p>
 <%= link_to 'Edit', edit_task_path(@task) %> |
 <%= link_to 'Back', project_tasks_path(Project.find(@task.project_id)) %>

@@ -17,7 +17,7 @@ class Task
   # field :log, type: String
   field :logs, type: Array, default: []
   field :teken_time, type: String
-  attr_accessor :coment, :log
+  attr_accessor :coment, :log, :user
   # belongs_to :user
   after_initialize do
     self.user_id.compact!

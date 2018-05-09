@@ -90,9 +90,9 @@ class TasksController < ApplicationController
   # PATCH/PUT /tasks/1
   # PATCH/PUT /tasks/1.json
   def update
-    @task.user_id = params[:task][:user_id][1..-1]
+    params[:task][:user] ? @task.user_id = params[:task][:user].split : @task.user_id = params[:task][:user_id][1..-1]
     if @task.user_id.include?(current_user.id.as_json.values[0]) or current_user.admin
-      
+      @task.coments.push(params[:task][:coment]) if params[:task][:coment]
       respond_to do |format|
         if @task.update(task_params)
           format.html { redirect_to @task, info: 'Task was successfully updated.' }
