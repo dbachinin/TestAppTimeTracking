@@ -17,16 +17,6 @@
         <div class="card-header"><b>Coments:</b></div>
           <%= f.input :coment, as: :text, label: false %>
           <%= f.hidden_field :description, value: @task.description  %>
-          <hr>
-            <% i = 0;@task.coments.reject(&:empty?).reverse.each do |comment| %>
-
-              <div class="card-body"><%= comment %></div>
-              <% i+=1;if i != (@task.coments.reject(&:empty?).count) %>
-              <hr>
-              <%end%>
-           
-
-        <% end %>
       </div>
     </div>
     <div class="col-sm-4">
