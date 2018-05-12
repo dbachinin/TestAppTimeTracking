@@ -1,13 +1,8 @@
 <p id="notice"><%= notice %></p>
-
+<div class="center-text"></div>
 <p>
-  <strong>Project name:</strong>
-  <%= @project.project_name %>
-</p>
-
-<p>
-  <strong>Tasks:</strong>
-  <%= @tasks.map { |e|e.theme  }.join(',') %>
+  <h1><strong><%= @project.project_name %></strong></h1>
+  Project name:
 </p>
 
 <p>
@@ -20,12 +15,59 @@
   <%= @project.uid %>
 </p>
 
-<p>
-  <strong>User:</strong>
-  <%= @project.user_id %>
-</p>
-
  <%= render :template => 'tasks/index' %>
 
 <%= link_to 'Edit', edit_project_path(@project) %> |
 <%= link_to 'Back', user_projects_path(@user) %>
+
+<body>
+  <div class="py-5 text-center">
+    <div class="container">
+      <div class="row"> </div>
+    </div>
+  </div>
+  <div class="py-5" >
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="col-12 col-md-12">
+            <h1 class="display-3 text-left"><%= @project.project_name %></h1>
+            <p class="lead text-muted text-left">Created by <%= User.find(@project.user_id).name %> </p>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="card my-4">
+            <div class="card-header">
+              <h5 class="mb-0 text-center">Description:</h5>
+            </div>
+            <div class="card-body">
+              <p class="card-text"><%= @project.description %></p>
+            </div>
+            <div class="card-footer">
+              <div class="alert alert-info" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">×</button>
+            <h4 class="alert-heading"><%= link_to @project.uid, project_path(@project.uid) %> </h4>
+            <p class="mb-0">It`s UID you project.</p>
+          </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="py-5">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-3">
+          <div class="card">
+            <img class="img-fluid rounded-circle w-75 mx-auto mt-3" src="https://picsum.photos/600/600?image=1074" alt="Card image">
+            <div class="card-body">
+              <h4 class="card-title">Card</h4>
+              <p class="">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+            </div>
+          </div>
+        </div>
+        
+  <pingendo onclick="window.open('https://pingendo.com/', '_blank')" style="cursor:pointer;position: fixed;bottom: 10px;right:10px;padding:4px;background-color: #00b0eb;border-radius: 8px; width:250px;display:flex;flex-direction:row;align-items:center;justify-content:center;font-size:14px;color:white">Made with Pingendo Free&nbsp;&nbsp;
+    <img src="https://pingendo.com/site-assets/Pingendo_logo_big.png" class="d-block" alt="Pingendo logo" height="16">
+  </pingendo>

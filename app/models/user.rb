@@ -3,7 +3,7 @@ class User
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable, 
-  :recoverable, :rememberable, :trackable, :validatable, authentication_keys: [:name]
+  :recoverable, :rememberable, :trackable, :validatable, :confirmable, authentication_keys: [:name]
   after_initialize :create_name, if: :new_record?
   after_initialize :get_logname, unless: :new_record?
   before_save :add_admin
@@ -70,10 +70,10 @@ class User
   # attr_accessor :name, :email, :password, :password_confirmation, :remember_me
 
   ## Confirmable
-  # field :confirmation_token,   type: String
-  # field :confirmed_at,         type: Time
-  # field :confirmation_sent_at, type: Time
-  # field :unconfirmed_email,    type: String # Only if using reconfirmable
+  field :confirmation_token,   type: String
+  field :confirmed_at,         type: Time
+  field :confirmation_sent_at, type: Time
+  field :unconfirmed_email,    type: String # Only if using reconfirmable
 
   ## Lockable
   # field :failed_attempts, type: Integer, default: 0 # Only if lock strategy is :failed_attempts
