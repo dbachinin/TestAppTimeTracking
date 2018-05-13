@@ -1,5 +1,6 @@
 class User
   include Mongoid::Document
+  include AvatarHelper
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable, 
@@ -36,19 +37,6 @@ class User
       self.admin = 1
     end
   end
-  private
-  def create_name
-    if self.name.blank?
-      email = self.email.split(/@/)
-      name_taken = User.where(name: email[0]).first
-      unless name_taken
-        self.name = email[0] 
-      else    
-        self.name = self.email unless email[1]
-        self.name = email[0] + SecureRandom.random_number(1_000_000).to_s if email[1] 
-      end   
-    end     
-  end
   
   def get_logname
     if self.name.include?('@')
@@ -62,6 +50,22 @@ class User
       end
     end
   end
+
+  private
+  def create_name
+    if self.name.blank?
+      email = self.email.split(/@/)
+      name_taken = User.where(name: email[0]).first
+      unless name_taken
+        self.name = email[0] 
+      else    
+        self.name = self.email unless email[1]
+        self.name = email[0] + SecureRandom.random_number(1_000_000).to_s if email[1] 
+      end
+    end
+    create_avatar(self.id)   
+  end
+  
   
   has_many :project, autosave: true
   has_many :task, autosave: true

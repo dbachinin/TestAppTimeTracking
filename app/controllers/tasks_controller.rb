@@ -3,7 +3,7 @@ class TasksController < ApplicationController
   before_action :authenticate_user!
   before_action :set_arrays
   add_flash_types :info, :success, :warning, :danger
-
+  
   def set_arrays
     @task_type = [["Error", 0],["Cosmetic", 1],["Exception", 2], ["Teature", 3],["Task", 4], ["Usability", 5], ["Performance", 6]]
     @task_priority = [["Emergency", 0], ["Critical", 1], ["Serious", 2], ["Regular", 3], ["Low", 4]]
