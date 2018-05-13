@@ -7,6 +7,7 @@ class TasksController < ApplicationController
   def set_arrays
     @task_type = [["Error", 0],["Cosmetic", 1],["Exception", 2], ["Teature", 3],["Task", 4], ["Usability", 5], ["Performance", 6]]
     @task_priority = [["Emergency", 0], ["Critical", 1], ["Serious", 2], ["Regular", 3], ["Low", 4]]
+    @log = ["Open", "Submited", "In Review", "Fixed"]
   end
   def self_user?(user)
     if user.include?(current_user.id.as_json.values[0]) 
@@ -69,9 +70,9 @@ class TasksController < ApplicationController
     @user = current_user
     @project = Project.find(params[:project_uid])
     @task = Task.create(task_params)
+    # create_task_icon(@task.id)
     @task.coments.push(params[:task][:coment])
-    @logs = @task.log
-    # @logs.push(params[:task][:log])
+    @task.logs.push(params[:task][:log]||"Open")
     @task.creator = @user.id.as_json.values[0]
     @task.date_range = (Date.parse(@task.estimate_time)..Date.parse(@task.teken_time))
     @task.user_id = params[:task][:user_id][1..-1]
@@ -93,9 +94,13 @@ class TasksController < ApplicationController
   # PATCH/PUT /tasks/1.json
   def update
     old_task = Task.find(params[:id])
+    @task.date_range = (Date.parse(@task.estimate_time)..Date.parse(@task.teken_time))
     params[:task][:user] ? @task.user_id = params[:task][:user].split : @task.user_id = params[:task][:user_id][1..-1]
     if @task.user_id.include?(current_user.id.as_json.values[0]) or current_user.admin
       @task.coments.push(params[:task][:coment]) if params[:task][:coment]
+      @task.logs.push(params[:task][:log])
+      # if @task.logs.last == "Finish"
+
       respond_to do |format|
         if @task.update(task_params)
           TasksMailer.submitted(@task.user_id,@task,old_task).deliver_now
@@ -115,9 +120,11 @@ class TasksController < ApplicationController
   # DELETE /tasks/1.json
   def destroy
     @user = current_user
+    @project = Project.find(@task.project_id)
+    FileUtils.rm_f("avatars/#{@task.id}")
     @task.destroy
     respond_to do |format|
-      format.html { redirect_to tasks_path, notice: 'Task was successfully destroyed.' }
+      format.html { redirect_to project_tasks_path(@task.project_id), notice: 'Task was successfully destroyed.' }
       format.json { head :no_content }
     end
   end

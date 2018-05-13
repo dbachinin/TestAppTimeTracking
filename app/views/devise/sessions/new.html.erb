@@ -1,66 +1,66 @@
 <aside class="d-block mx-auto col-sm-4">
-              <h2>Sign in or Sign up</h2>
-              <div class="card">
-<article class="card-body">
-            <ul class="nav nav-tabs">
-                <li class="nav-item fade show active"><a data-toggle="tab" href="#signin" class="nav-link ">Sign in</a>
-                </li>
-                <li class="nav-item"><a data-toggle="tab" href="#signup" class="nav-link">Sign up</a>
-                </li>
-            </ul>
-            <div class="tab-content">
-                <div id="signin" class="tab-pane fade show active">
-                      <h3>SIGN IN</h3>
-                    <%= form_for(:user, url: session_path(:user)) do |f| %>
-                        <div class="form-group">
-                            <%= f.label :name, class: "sr-only" %> <br />
-                            <%= f.text_field :name, placeholder: "Name", autofocus: true, class: "form-control"%>
-                        </div>
-                        <div class="form-group">
-                            <%= f.label :password, class: "sr-only", for: "InputPassword" %><br />
-                            <%= f.password_field :password, placeholder: "You password", autocomplete: "off", id: "InputPassword2", class: "form-control" %>
-                        </div>
-                        <div class="form-group">
-                            <label>
-                                <%= f.check_box :remember_me %>
-                                <%= f.label :remember_me, "Save password" %></label>
-                        </div>
-                        <div class="form-group">
-                            <%= f.submit "Log in", class: "btn btn-primary btn-block" %>
-                        </div>
-                        <% end %>
-                    </form>
-                </div>
-                <div id="signup" class="tab-pane fade">
-                      <h3>SIGN UP</h3>
-                    <p>You will receive an email to verify your account.</p>
-                    <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
-                        <div class="form-group">
-                            <%= f.text_field :name,placeholder: "You loginame", class: "form-control" %>
-                        </div>
-                        <div class="form-group">
-                            <%= f.email_field :email,placeholder: "Email", autofocus: true, autocomplete: "email", class: "form-control" %>
-                        </div>
-                        <div class="form-group">
-                            <%= f.label :password %>
-                                <% if @minimum_password_length %>
-                                <em>(<%= @minimum_password_length %> characters minimum)</em>
-                                <% end %><br />
-                                <%= f.password_field :password,placeholder: "You password", autocomplete: "off", class: "form-control" %>
-                        </div>
-                        <div class="form-group">
-                                <%= f.label :password_confirmation %><br />
-                                <%= f.password_field :password_confirmation,placeholder: "Confirm you pass", autocomplete: "off", class: "form-control" %>
-                        </div>
-                        <div class="form-group">
-                          <%= f.submit "Sign up" %>
-                        </div>
-                        <%end%>
-
-                </div>
+  <h2>Sign in or Sign up</h2>
+  <div class="card">
+    <article class="card-body">
+      <ul class="nav nav-tabs">
+        <li class="nav-item fade show active"><a data-toggle="tab" href="#signin" class="nav-link ">Sign in</a>
+        </li>
+        <li class="nav-item"><a data-toggle="tab" href="#signup" class="nav-link">Sign up</a>
+        </li>
+      </ul>
+      <div class="tab-content">
+        <div id="signin" class="tab-pane fade show active">
+          <h3>SIGN IN</h3>
+          <%= form_for(:user, url: session_path(:user)) do |f| %>
+          <div class="form-group">
+            <%= f.label :name, class: "sr-only" %> <br />
+            <%= f.text_field :name, placeholder: "Name", autofocus: true, class: "form-control"%>
+          </div>
+          <div class="form-group">
+            <%= f.label :password, class: "sr-only", for: "InputPassword" %><br />
+            <%= f.password_field :password, placeholder: "You password", autocomplete: "off", id: "InputPassword2", class: "form-control" %>
+          </div>
+          <div class="form-group">
+            <label>
+              <%= f.check_box :remember_me %>
+              <%= f.label :remember_me, "Save password" %></label>
             </div>
+            <div class="form-group">
+              <%= f.submit "Log in", class: "btn btn-primary btn-block" %>
+            </div>
+            <% end %>
+          </form>
         </div>
-        <%= link_to "Forgot your password?", new_password_path(resource_name) %><br />
-        </article>
+        <div id="signup" class="tab-pane fade">
+          <h3>SIGN UP</h3>
+          <p>You will receive an email to verify your account.</p>
+          <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+          <div class="form-group">
+            <%= f.text_field :name,placeholder: "You loginame", class: "form-control" %>
+          </div>
+          <div class="form-group">
+            <%= f.email_field :email,placeholder: "Email", autofocus: true, autocomplete: "email", class: "form-control" %>
+          </div>
+          <div class="form-group">
+            <%= f.label :password %>
+            <% if @minimum_password_length %>
+            <em>(<%= @minimum_password_length %> characters minimum)</em>
+            <% end %><br />
+            <%= f.password_field :password,placeholder: "You password", autocomplete: "off", class: "form-control" %>
+          </div>
+          <div class="form-group">
+            <%= f.label :password_confirmation %><br />
+            <%= f.password_field :password_confirmation,placeholder: "Confirm you pass", autocomplete: "off", class: "form-control" %>
+          </div>
+          <div class="form-group">
+            <%= f.submit "Sign up" %>
+          </div>
+          <%end%>
+
+        </div>
+      </div>
+    </div>
+    <%= link_to "Forgot your password?", new_password_path(resource_name) %><br />
+  </article>
 </div>
       </aside> <!-- col.// -->

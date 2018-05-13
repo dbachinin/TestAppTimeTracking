@@ -1,4 +1,5 @@
-<h1>People</h1>
+<h2>Users</h2>
+<div class="table-responsive-sm table-responsive">
 <table class="table table-striped table-hover table-condensed">
   <thead>
     <tr>
@@ -13,15 +14,17 @@
   <tbody>
     <% @users.each do |user| %>
       <tr>
-        <td><%= image_tag "avatars/#{user.id}", alt: '', class: "height: 20px img-fluid rounded-circle" %></td>
-        <td><%= user.name %></td>
+        <td><div class="pic_in_list mx-auto"><%= render partial: "layouts/pic", locals: {id: user.id}, style: "max-width 20%" %></div></td>
+        <td ><%= user.name %></td>
         <td><%= user.admin %></td>
         <td><%= user.email %></td>
-        <td><%= link_to 'Show', user_path(user) %></td>
-        <td><%= link_to 'Destroy', user, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <% current_user.admin ? user = user : user = current_user %>
+        <td><%= button_to 'Show', user_path(user), method: :get,class: "btn btn-primary" %></td>
+        <td><%= button_to 'Destroy', user, method: :delete, data: { confirm: 'Are you sure?' },class: "btn btn-danger" %></td>
       </tr>
     <% end %>
   </tbody>
 </table>
+</div>
 <br>
 

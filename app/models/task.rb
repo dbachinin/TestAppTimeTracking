@@ -1,6 +1,7 @@
 class Task
   include Mongoid::Document
   include Mongoid::Attributes::Dynamic
+  include AvatarHelper
   validates :theme, :task_type, :task_priority, presence: true
 
   field :theme, type: String
@@ -19,8 +20,9 @@ class Task
   field :teken_time, type: String
   attr_accessor :coment, :log, :user
   # belongs_to :user
-  after_initialize do
-    self.user_id.compact!
+  after_initialize :gen_pic, if: :new_record?
+  def gen_pic
+    create_task_icon(self.id)
   end
   # before_save do
   #   self.logs << self.log

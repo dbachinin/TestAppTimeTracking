@@ -1,14 +1,21 @@
   <% front_color = ["4d8400", "847900", "844400", "842100", "510000"]%>
   <% back_color = ["e6f6cf", "f6f4cf", "f6dfcf", "f98989", "b74040"] %>
-<%= simple_nested_form_for(@task) do |f| %>
-<div class="container-fluid">
-  <div class="row">
-    <div class="col-sm">
-      <p>
-        <h3><strong>Project: <%= Project.find(@task.project_id).project_name %> </strong></h3>
-      </p>
-    <div class="card">
-        <div class="card-header"><b>Coments:</b></div>
+  <% log = ["Open", "Submited", "In Review", "Fixed"] %>
+  <%= simple_nested_form_for(@task) do |f| %>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-sm">
+        <p>
+          <h3><strong>Project: <%= Project.find(@task.project_id).project_name %> </strong></h3>
+        </p>
+        <div class="card">
+          <div class="card-header"><b>Contributor(s):</b></div>
+          <div class="card-body"><%= f.input :user_id, collection: User.all.map{|i| [i.name, i.id.as_json.values[0]]}, input_html: { multiple: true } %></div>
+        </div>
+
+        <hr>
+        <div class="card">
+          <div class="card-header"><b>Coments:</b></div>
           <%= f.input :coment, as: :text, label: false %>
           <%= f.hidden_field :theme, value: @task.theme  %>
           <%= f.hidden_field :task_type, value: @task.task_type  %>
@@ -16,21 +23,27 @@
           <%= f.hidden_field :description, value: @task.description  %>
           <div class="col-sm4"><%= f.button :submit, "Add Coment", :class => 'btn btn-success btn-mini' %></div>
           <hr>
-            <% i = 0;@task.coments.reject(&:empty?).reverse.each do |comment| %>
+          <% i = 0;@task.coments.reject(&:empty?).reverse.each do |comment| %>
 
-              <div class="card-body"><%= comment %></div>
-              <% i+=1;if i != (@task.coments.reject(&:empty?).count) %>
-              <hr>
-              <%end%>
-           
+          <div class="card-body"><b><%= comment %></b></div>
+          <% i+=1;if i != (@task.coments.reject(&:empty?).count) %>
+          <hr>
+          <%end%>
 
-        <% end %>
+
+          <% end %>
+        </div>
       </div>
-    </div>
-    <div class="col-sm-4">
-      <h3><strong>Task: <%= @task.theme %></strong></h3>
+      <div class="col-sm-4">
+        <h3><strong>Task: <%= @task.theme %></strong></h3>
       </br>
-      <hr>
+      <div class='picture' style="">
+        <%= render partial: "layouts/pic_task", locals: {id: @task.id} %>
+      </div>
+      <div class="row">
+        <%= button_to 'Edit', edit_task_path(@task), method: :get, class: "btn btn-secondary m-2" %>
+        <%= button_to 'Back', project_tasks_path(Project.find(@task.project_id)), method: :get, class: "btn btn-secondary m-2" %>
+      </div>
       <p>
         <%= @task.description %>
       </p>
@@ -43,54 +56,49 @@
       <p>
         <strong>Priority:</strong>
         <div class="col-sm4" style="background-color:#<%= back_color.reverse[@task.task_priority]%> !important;">
-            <div style="overflow:hidden;color:#<%= front_color.reverse[@task.task_priority]%> !important;">
-                <%= Hash[@task_priority].key(@task.task_priority) %>
-            </div>
+          <div style="overflow:hidden;color:#<%= front_color.reverse[@task.task_priority]%> !important;">
+            <%= Hash[@task_priority].key(@task.task_priority) %>
+          </div>
         </div>
       </p>
 
       <hr>
-      <div class="card">
-        <div class="card-header"><b>Contributor(s):</b></div>
-        <div class="card-body"><%= f.input :user_id, collection: User.all.map{|i| [i.name, i.id.as_json.values[0]]}, input_html: { multiple: true } %></div>
-      </div>
 
-      <hr>
       <p>
         <strong>Logs:</strong>
-        <%= @task.logs %>
+        <%= f.input :log, collection: @log, label: false, selected: @task.logs.last%>
       </p>
       <hr>
-    <div class="input-daterange input-group" id="datepicker">
-      <%= f.text_field :estimate_time,  class: "input-sm form-control"%>
-      <div class="input-group-addon">to</div>
-      <%= f.text_field :teken_time,  class: "input-sm form-control"%>
+      <div class="input-daterange input-group" id="datepicker">
+        <%= f.text_field :estimate_time,  class: "input-sm form-control"%>
+        <div class="input-group-addon">to</div>
+        <%= f.text_field :teken_time,  class: "input-sm form-control"%>
+      </div>
+      <hr>
+      <div class="row">
+        <div class="col-sm4"><%= f.button :submit, "Save", :class => 'btn btn-success btn-mini m-2' %></div>
+        <%= button_to 'Delete Task', task_path(@task), method: :delete, data: { confirm: 'Are you sure?' },class: "col-sm4 btn btn-danger m-2" %>
+      </div>
+      <% end %>
     </div>
-    <hr>
-    <div class="col-sm4"><%= f.button :submit, "Save", :class => 'btn btn-success btn-mini' %></div>
-     <% end %>
   </div>
-</div>
 
 
-<script >
-  var date = new Date();
-  var today = new Date(date.getFullYear(), date.getMonth(), date.getDate());
-  (function() {
-    $(document).on('turbolinks:load', function() {
-      return $('#datepicker').datepicker({
-        format: 'yyyy-mm-dd',
-        todayBtn: true,
-        daysOfWeekHighlighted: '0,6',
-        todayHighlight: true,
-        autoclose: true,
-        startDate: today,
-        orientation: "auto left"
+  <script >
+    var date = new Date();
+    var today = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+    (function() {
+      $(document).on('turbolinks:load', function() {
+        return $('#datepicker').datepicker({
+          format: 'yyyy-mm-dd',
+          todayBtn: true,
+          daysOfWeekHighlighted: '0,6',
+          todayHighlight: true,
+          autoclose: true,
+          startDate: today,
+          orientation: "auto left"
+        });
       });
-    });
-  }).call(this);
-  
-</script>
+    }).call(this);
 
-<%= link_to 'Edit', edit_task_path(@task) %> |
-<%= link_to 'Back', project_tasks_path(Project.find(@task.project_id)) %>
+  </script>

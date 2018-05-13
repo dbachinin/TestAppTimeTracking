@@ -48,7 +48,7 @@ module AvatarHelper
 				pictarr = []
 				9.times{|i| i / 3.0 == i / 3 ? pictarr << ["0","1"].sample : pictarr << pictarr[i-2]}
 			end
-			
+			i = 0
 			(0..100).step(50) do |y|
 				(0..100).step(50) do |x|
 					color = Magick::colors.map{ |colorinfo|colorinfo.name}.grep_v(%r{white|gray|black|light|yellow|cream|beige|snow|ice|ivory|[0-9]}i).sample

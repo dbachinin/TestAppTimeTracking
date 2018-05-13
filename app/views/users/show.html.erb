@@ -1,8 +1,22 @@
-<h1>People</h1>
-<%= @user.name %>
-<%= @user.email %>
+<div class="d-block mx-auto col-sm-4">
+	<div class="card" >
+		<div class='picture' style="">
+			<%= render partial: "layouts/pic", locals: {id: params[:id]} %>
+		</div>
+		<p class=""><%= button_to "Generate New UserPic", { :action => "change_pic", :id => @user.id }, remote: true, class: "btn btn-secondary d-block mx-auto"%></p>
+		<hr>
+		<div class="card-body">
+			<h3 class="card-title"><b>User:</b><%= @user.name %></h3>
 
-<%= simple_form_for(@user) do |f| %>
-  <%= f.input_field :admin, as: :boolean if current_user.admin%>
-  <%= f.button :submit %>
-<% end %>
+			<h4 class=""><%= @user.email %></h4>
+			<p class="">
+				<%= simple_form_for(@user) do |f| %>
+				<%= f.input_field :admin, as: :boolean if current_user.admin%>
+				<%= f.label :submit, "Admin role enabled" %>
+				<br />
+			</p>
+		</div>
+		<%= f.button :submit, class: "btn btn-primary" %>
+		<% end %>
+	</div>
+</div>

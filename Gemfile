@@ -36,6 +36,8 @@ gem 'simple_form'
 
 gem 'rmagick'
 
+gem "font-awesome-rails"
+
 gem 'bootstrap-datepicker-rails', :require => 'bootstrap-datepicker-rails', :git => 'git://github.com/Nerian/bootstrap-datepicker-rails.git'
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 4.0'

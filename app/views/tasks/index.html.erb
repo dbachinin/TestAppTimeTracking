@@ -1,23 +1,66 @@
 <h1>Tasks</h1>
-<%= link_to 'New Task', new_project_task_path(@project.uid) %>
-<% if @tasks%>
-<hr>
-<div class="container">
-  <div class="row">
-    <% @tasks.each do |task| %>
-          <div class="col-sm-3">
-            <div class="well"> 
-              <h3 class="text-center"><%= link_to "#{task.theme}", task %></h3>
-              <a class="text-center"><b>Executors: </b><%= p "#{User.find(task.user_id).map{|i|i.name}.join(',')}\n" %></a>
-            </br>
-              <a class="text-center"><b>Task Type: </b><%= Hash[@task_type].index(task.task_type) %></a></br>
-              <a class="text-center"><b>Task Priroity: </b><%= Hash[@task_priority].index(task.task_priority) %></a></br>
+<% back_color = ["f6dfcf", "f98989", "b74040"] %>
+<style type="text/css">
+  danger {color: }
+</style>
+<% danger = []; @tasks.each do |task|
+  if (Date.today..Date.parse(task.teken_time)).count < 6
+    danger.push(task)
+    end %>
+        <%end%>
+    <!-- table of dedlines -->
+    <% if danger.first %>
+    <aside class="d-block mx-auto">
+    <div class="row">
+ 
+    <div class="table-responsive-sm table-responsive">
+      <table class="table table-striped table-hover table-condensed">
+        <thead>
+          <tr>
+            <th></th>
+            <th>Task</th>
+            <th>Days before deadline</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <% danger.each do |task| %>
+          <tr>
+            <td> <div style="background-color: #<%= back_color.reverse[(Date.today..Date.parse(task.teken_time)).count / 2] %>";><%= image_tag "flag-checkered", size: "16"%></div></td>
+            <td ><%= link_to "#{task.theme}", task %></td>
+            <td><%= (Date.today..Date.parse(task.teken_time)).count %></td>
+          </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+
+</div>
+</aside>
+
+
+    <%end%>
+    <%= button_to 'New Task', new_project_task_path(@project.uid), method: :get %>
+    <div class="py-5">
+      <div class="container">
+        <div class="row">
+          <% @tasks.each do |task| %>
+
+          <div class="col-md-3">
+            <div class="card">
+             <%= image_tag "avatars/#{task.id}", alt: '', class: "img-fluid rounded-circle w-2 mx-auto mt-3 mx-auto d-block"%>
+             <div class="card-body">
+              <h4 class="card-title"><%= link_to "#{task.theme}", task %></h4>
+              <p class=""><b>Executors: </b><%= p "#{User.find(task.user_id).map{|i|i.name}.join(',')}\n" %></p>
+              <a><b>Task Type: </b><%= Hash[@task_type].key(task.task_type) %></a>
+              <a class="text-center"><b>Task Priroity: </b><%= Hash[@task_priority].key(task.task_priority) %></a></br>
               <a class="text-bottom"><b>Task Owner: </b><%= User.find(task.creator).name %></a></br>
+              <a class="text-bottom"><b>Task deadline: </b><%= task.date_range.max %></a></br>
             </div>
           </div>
-          <% end %>
-     </div>  
-</div>
-<hr>
-<%end%>
-<br>
+        </div>
+
+        <%end%>
+      </div>
+    </div>
+  </div>

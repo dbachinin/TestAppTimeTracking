@@ -1,14 +1,5 @@
 Rails.application.routes.draw do
-  get 'people/index'
-
-  get 'people/show'
-
-  get 'people/edit'
-
-  get 'people/update'
-
-  get 'people/destroy'
-
+  post 'users/change_pic'
     devise_for :users, :path => 'users'
     resources :users, shallow: true do
     	resources :projects, param: :uid do

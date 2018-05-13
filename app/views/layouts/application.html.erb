@@ -8,6 +8,16 @@
   <%= javascript_include_tag 'application', 'jquery': 'reload' %>
   <%= javascript_include_tag 'application', 'jquery_ujs': 'reload' %>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+  <style type="text/css">
+/*  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+  <script src="https://use.fontawesome.com/0eabbdf942.js"></script>
+*/
+
+    .pic_in_list {
+      max-width: 20%;
+    }
+    
+  </style>
   </head>
 
   <body>
@@ -15,9 +25,11 @@
 <% if user_signed_in? %>
    <%= render 'layouts/header'%>
 <% end %>
-  </br>
-  </br>
-  </br>
+  <div class="py-5 text-center">
+    <div class="container">
+      <div class="row"> </div>
+    </div>
+  </div>
     <div class="container">
       <div class="conent">
         <% flash.each do |name, msg| %>

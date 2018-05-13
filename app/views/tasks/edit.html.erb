@@ -1,5 +1,6 @@
   <% front_color = ["4d8400", "847900", "844400", "842100", "510000"]%>
   <% back_color = ["e6f6cf", "f6f4cf", "f6dfcf", "f98989", "b74040"] %>
+   <% log = ["Open", "Submited", "In Review", "Fixed"] %>
 <%= simple_nested_form_for(@task) do |f| %>
 <div class="container-fluid">
   <div class="row">
@@ -7,11 +8,32 @@
       <p>
         <h3><strong>Project: <%= Project.find(@task.project_id).project_name %> </strong></h3>
       </p>
+                <div class='picture' style="">
+            <%= render partial: "layouts/pic_task", locals: {id: @task.id} %>
+          </div>
+          <hr>
+            <div class="card">
+        <div class="card-header"><b>Contributor(s):</b></div>
+        <% User.find(@task.user_id).each do |user| %>
+        <div class="card-body"><%= f.input :user_id, collection: User.all.map{|i| [i.name, i.id.as_json.values[0]]}, input_html: { multiple: true } %></div>
+        <%end%>
+      </div>
+
+      <hr>
+      
+      <b>Dates start to finish</b>
+      
+          <div class="input-daterange input-group" id="datepicker">
+      <%= f.text_field :estimate_time,  class: "input-sm form-control"%>
+      <div class="input-group-addon">to</div>
+      <%= f.text_field :teken_time,  class: "input-sm form-control"%>
+    </div>
+
+    <hr>
     <div class="card">
         <div class="card-header"><b>Coments:</b></div>
           <%= f.input :coment, as: :text, label: false %>
           <%= f.hidden_field :description, value: @task.description  %>
-          <div class="col-sm4"><%= f.button :submit, "Add Coment", :class => 'btn btn-success btn-mini' %></div>
           <hr>
             <% i = 0;@task.coments.reject(&:empty?).reverse.each do |comment| %>
 
@@ -37,31 +59,20 @@
         <%= f.input :task_type, collection: @task_type %>
       </p>
       <hr>
+
       <p>
         <strong>Priority:</strong>
         <%= f.input :task_priority, collection: @task_priority %>
       </p>
 
       <hr>
-      <div class="card">
-        <div class="card-header"><b>Contributor(s):</b></div>
-        <% User.find(@task.user_id).each do |user| %>
-        <div class="card-body"><%= f.input :user_id, collection: User.all.map{|i| [i.name, i.id.as_json.values[0]]}, input_html: { multiple: true } %></div>
-        <%end%>
-      </div>
 
-      <hr>
-      <p>
+       <p>
         <strong>Logs:</strong>
-        <%= @task.logs %>
+        <%= f.input :log, collection: @log, label: false, selected: @task.logs.last%>
       </p>
       <hr>
-    <div class="input-daterange input-group" id="datepicker">
-      <%= f.text_field :estimate_time,  class: "input-sm form-control"%>
-      <div class="input-group-addon">to</div>
-      <%= f.text_field :teken_time,  class: "input-sm form-control"%>
-    </div>
-    <hr>
+
     <div class="col-sm4"><%= f.button :submit, "Save", :class => 'btn btn-success btn-mini' %></div>
      <% end %>
   </div>

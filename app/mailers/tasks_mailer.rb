@@ -13,9 +13,9 @@ class TasksMailer < ApplicationMailer
 	@task_priority = [["Emergency", 0], ["Critical", 1], ["Serious", 2], ["Regular", 3], ["Low", 4]]
 
     User.find(@task.user_id).each do |i|
-    	mail(to: i.email, subject: "TimeTracking for #{task.theme}")
+    	mail(to: i.email, subject: "#{@task.creator} #{task.theme} in #{Project.find(@task.project_id).project_name}")
     end
-    
+    mail(to: User.find(@task.creator).email, subject: "You create task #{task.theme}")
   end
   def messages()
   	User.find(@task.user_id).each do |i|
