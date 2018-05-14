@@ -22,7 +22,7 @@ class UsersController < ApplicationController
 
   def update
    current_user.admin ? @user = User.find(params[:id]) : @user = User.find(current_user.id)
-   @user.avatar = create_avatar(@iser.id)
+   # @user.avatar = create_avatar(@user.id)
    respond_to do |format|
     if @user.update(user_params)
       format.html { redirect_to  users_path, notice: "#{@user.name} was successfully updated." }
