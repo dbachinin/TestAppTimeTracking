@@ -4,9 +4,9 @@ class User
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable, 
-  :recoverable, :rememberable, :trackable, :validatable, :confirmable, authentication_keys: [:name]
+  :recoverable, :rememberable, :trackable, :validatable, :confirmable, authentication_keys: [:name] || [:email]
   after_initialize :create_name, if: :new_record?
-  after_initialize :get_logname, unless: :new_record?
+  # after_initialize :get_logname, unless: :new_record?
   before_save :gen_pic
   before_save :add_admin
   ## Database authenticatable
@@ -40,18 +40,13 @@ class User
     end
   end
   
-  def get_logname
-    if self.name.include?('@')
-      email = self.name 
-      user = User.find_by(email: email)
-      if user
-        self.name = user.name
-        self.email = email
-      else
-        errors.add(:name, :invalid)
-      end
-    end
-  end
+def self.find_for_database_authentication(conditions={})
+  if conditions[:name].include?("@")
+   find_by(email: conditions[:name])
+  else
+   find_by(name: conditions[:name])
+ end
+end
 
   private
   def create_name
