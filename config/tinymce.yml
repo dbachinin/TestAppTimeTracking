@@ -1,0 +1,5 @@
+plugins:
+  - link anchor code paste
+# Each line is a toolbar
+toolbar: 
+  - styleselect | formatselect | fontsizeselect | bold italic strikethrough | alignleft aligncenter alignright alignjustify | link code
