@@ -46,8 +46,10 @@ class ProjectsController < ApplicationController
     @project = @user.project.create(project_params)
     task = params[:project][:task]
     # @project.tasks = task[1..-1]
+    File.write('tmp/tmp1',params)
     respond_to do |format|
       if @project.save
+        format.js
         format.html { redirect_to @project, notice: 'Project was successfully created.' }
         format.json { render :show, status: :created, location: @project }
       else
