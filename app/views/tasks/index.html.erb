@@ -48,7 +48,8 @@
 
           <div class="col-md-3">
             <div class="card">
-             <%= image_tag "avatars/#{task.id}", alt: '', class: "img-fluid rounded-circle w-2 mx-auto mt-3 mx-auto d-block"%>
+             
+             <img src="data:image/png;base64,<%=Base64.encode64(task.pic.data)%>", class="img-fluid rounded-circle w-2 mx-auto mt-3 mx-auto d-block" >
              <div class="card-body">
               <h4 class="card-title"><%= link_to "#{task.theme}", task %></h4>
               <p class=""><b>Executors: </b><%= p "#{User.find(task.user_id).map{|i|i.name}.join(',')}\n" %></p>

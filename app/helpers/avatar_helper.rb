@@ -12,7 +12,7 @@ module AvatarHelper
 		attr_accessor :id, :uri
 		def make_userpic
 			list = Magick::ImageList.new
-			list.new_image(150, 150, Magick::SolidFill.new('white'))
+			list.new_image(60, 60, Magick::SolidFill.new('white'))
 			pic = Magick::Draw.new
 			pictarr = []
 			until pictarr.include?("1") and pictarr.include?("0")
@@ -22,21 +22,23 @@ module AvatarHelper
 			
 			i = 0
 			color = Magick::colors.map{ |colorinfo|colorinfo.name}.grep_v(%r{white|gray|black|light|yellow|cream|beige|snow|ice|ivory|[0-9]}i).sample
-			(0..100).step(50) do |y|
-				(0..100).step(50) do |x|
+			(0..40).step(20) do |y|
+				(0..40).step(20) do |x|
 					pic.fill_opacity(0)
 					pic.stroke(color)
 					pic.fill(color) 
 					pic.stroke_width(1)
-					pic.rectangle(x,y,x+50,y+50) if pictarr[i] != "0"
+					pic.rectangle(x,y,x+20,y+20) if pictarr[i] != "0"
 					i+=1
 				end
 			end
 			pic.draw(list)
 			@f_name = "#{id}.png"
-			list.write("app/assets/images/avatars/" + @f_name)
-			uri = "app/assets/images/avatars/" + @f_name
-			uri
+			list.write("tmp/" + @f_name)
+			# uri = "tmp/" + @f_name
+			# user = User.find(id)
+			# user.pic = BSON::Binary.new(File.read(uri))
+			# FileUtil.rm(uri)
 		end
 
 		def create_icon
@@ -46,7 +48,7 @@ module AvatarHelper
 			pictarr = []
 			until pictarr.include?("1") and pictarr.include?("0")
 				pictarr = []
-				9.times{|i| i / 3.0 == i / 3 ? pictarr << ["0","1"].sample : pictarr << pictarr[i-2]}
+				9.times{|i| pictarr << ["0","1"].sample }
 			end
 			i = 0
 			(0..100).step(50) do |y|
@@ -62,9 +64,11 @@ module AvatarHelper
 			end
 			pic.draw(list)
 			@f_name = "#{id}.png"
-			list.write("app/assets/images/avatars/" + @f_name)
-			uri = "app/assets/images/avatars/" + @f_name
-			uri
+			list.write("tmp/" + @f_name)
+			# uri = "tmp/" + @f_name
+			# task = Task.find(id)
+			# task.pic = BSON::Binary.new(File.read(uri))
+   #          FileUtils.rm(uri)
 		end
 
 	end

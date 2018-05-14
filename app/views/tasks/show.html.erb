@@ -37,9 +37,9 @@
       <div class="col-sm-4">
         <h3><strong>Task: <%= @task.theme %></strong></h3>
       </br>
-      <div class='picture' style="">
+
         <%= render partial: "layouts/pic_task", locals: {id: @task.id} %>
-      </div>
+
       <div class="row">
         <%= button_to 'Edit', edit_task_path(@task), method: :get, class: "btn btn-secondary m-2" %>
         <%= button_to 'Back', project_tasks_path(Project.find(@task.project_id)), method: :get, class: "btn btn-secondary m-2" %>

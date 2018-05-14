@@ -18,11 +18,15 @@ class Task
   # field :log, type: String
   field :logs, type: Array, default: []
   field :teken_time, type: String
+  field :pic, type: BSON::Binary
   attr_accessor :coment, :log, :user
   # belongs_to :user
   after_initialize :gen_pic, if: :new_record?
   def gen_pic
     create_task_icon(self.id)
+    file = "tmp/#{self.id}.png"
+    self.pic = BSON::Binary.new(File.read(file))
+    FileUtils.rm(file)
   end
   # before_save do
   #   self.logs << self.log

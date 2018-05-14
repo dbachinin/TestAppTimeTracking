@@ -14,7 +14,7 @@
   <tbody>
     <% @users.each do |user| %>
       <tr>
-        <td><div class="pic_in_list mx-auto"><%= render partial: "layouts/pic", locals: {id: user.id}, style: "max-width 20%" %></div></td>
+        <td><%= render partial: "layouts/pic", locals: {id: user.id} %></td>
         <td ><%= user.name %></td>
         <td><%= user.admin %></td>
         <td><%= user.email %></td>

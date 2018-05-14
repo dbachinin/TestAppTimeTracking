@@ -1,6 +1,20 @@
-<h1>Projects</h1>
+<% if @projects.first %>
+    <%if @user.admin%>
+        <h1>Projects</h1>
+        <hr>
+    <%else%>
+        <h1>You rojects</h1>
+        <hr>
+    <% end -%>
+<%else%>
+<h1>No projects</h1>
+  <% if @user.admin%>
+    <p>You can be created it`s</p>
+  <%else%>
+    <p>You can`t be created it`s</p>
+  <% end -%>
+<% end -%>
 
-<hr>
 <div class="container">
   <div class="row">
     <% @projects.each do |project| %>
@@ -22,4 +36,4 @@
 </div>
 </div>
 <hr>
-<%= link_to 'New Project', new_user_project_path(@user, @project) if @user.admin%>
+<%= button_to 'New Project', new_user_project_path(@user, @project), method: :get, class: "btn btn-primary my-2" if @user.admin%>

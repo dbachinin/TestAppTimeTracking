@@ -7,6 +7,7 @@ class User
   :recoverable, :rememberable, :trackable, :validatable, :confirmable, authentication_keys: [:name]
   after_initialize :create_name, if: :new_record?
   after_initialize :get_logname, unless: :new_record?
+  before_save :gen_pic
   before_save :add_admin
   ## Database authenticatable
   field :email,              type: String, default: ""
@@ -29,6 +30,7 @@ class User
   
   field :avatar,             type: String
   field :admin,              type: Mongoid::Boolean
+  field :pic,                type: BSON::Binary
   validates :name, presence: true, uniqueness: {case_sensitive: false}
 
   validates_format_of :name, with: /^[a-zA-Z0-9_\.]*$/, multiline: true
@@ -63,9 +65,13 @@ class User
         self.name = email[0] + SecureRandom.random_number(1_000_000).to_s if email[1] 
       end
     end
-    create_avatar(self.id)   
   end
-  
+  def gen_pic
+    create_avatar(self.id)
+    file = "tmp/#{self.id}.png"
+    self.pic = BSON::Binary.new(File.read(file))
+    FileUtils.rm(file)
+  end
   
   has_many :project, autosave: true
   has_many :task, autosave: true

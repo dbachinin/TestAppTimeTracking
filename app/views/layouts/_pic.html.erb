@@ -1,1 +1,1 @@
-<%= image_tag "avatars/#{id}", alt: '', class: "img-fluid rounded-circle w-2 mx-auto mt-3 mx-auto d-block"%>
+<img src="data:image/png;base64,<%=Base64.encode64(User.find(id).pic.data)%>", class="img-fluid rounded-circle w-2 mx-auto mt-3 mx-auto d-block" >

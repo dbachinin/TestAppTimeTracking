@@ -24,13 +24,13 @@
             <td style="vertical-align:top;font-family:sans-serif;font-size:13px;">
 
     <a title="                Task created user <%= User.find(@task.creator).name %> 
-              " style="font-size:15px;color:#1466c6;text-decoration:none;" href="<%= task_url(@task)%>" class="daria-goto-anchor" target="_blank" rel="noopener noreferrer">
+              " style="font-size:15px;color:#1466c6;text-decoration:none;" href="<%= task_url(@task)%>"></a>
+              <img src="data:image/png;base64,<%=Base64.encode64(User.find(@task.creator).pic.data)%>" >
               <% if @old_task.theme == @task.theme%>
               <%= @task.theme %>
               <%else%>
               <%= @old_task.theme %> <span style="margin-left:5px;"> → </span> <%= @task.theme %>
               <%end %>
-    </a>
             </td>
             <td style="padding-left:5px;font-size:11px;font-family:sans-serif;text-align:right;color:#888888;">
                     create: <%= User.find(@task.creator).name %>

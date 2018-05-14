@@ -1,5 +1,18 @@
-<h1>New Project</h1>
-
+<div class="card my-4">
+	 <div class="card-header bg-secondary" >
+ <h3 class="mb-0 text-center">New Project</h3>
+</div>
+<div class="card-body">
 <%= render 'form', project: @project %>
-
-<%= link_to 'Back', user_projects_path(@user, @project) %>
+</div>
+<div class="card-footer">
+<ul class="breadcrumb" >
+	<li class="breadcrumb-item">
+		<%= link_to "Projects", user_projects_path(@user, @project) %>
+	</li>
+	<li class="breadcrumb-item">
+		<a href="#">New Project</a>
+	</li>
+	</ul>
+</div>
+</div>
