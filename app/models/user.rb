@@ -7,12 +7,16 @@ class User
   :recoverable, :rememberable, :trackable, :validatable, :confirmable, authentication_keys: [:name] || [:email]
   after_initialize :create_name, if: :new_record?
   # after_initialize :get_logname, unless: :new_record?
-  before_save :gen_pic
+  before_save :gen_pic, if: :new_record?
   before_save :add_admin
   ## Database authenticatable
   field :email,              type: String, default: ""
   field :encrypted_password, type: String, default: ""
   field :name,               type: String, default: ""
+  field :fname,              type: String, default: ""
+  field :lname,              type: String, default: ""
+  field :b_date,             type: String, default: ""
+  field :post,               type: String, default: ""
 
   ## Recoverable
   field :reset_password_token,   type: String

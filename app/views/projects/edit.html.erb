@@ -1,20 +1,34 @@
-<h1>Editing Project</h1>
+<%= form_with url: @project, action: :update,method: :put, remote: false do |f| %>
+<% if @project.errors.any? %>
+<div id="error_explanation">
+      <h2><%= pluralize(@project.errors.count, "error") %> prohibited this @project from being saved:</h2>
 
-<%= simple_form_for(@project) do |f| %>
-  <%= f.error_notification %>
-  <%= f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present? %>
-
+      <ul>
+      <% @project.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      <% end -%>
   <div class="form-inputs">
-    <%= f.input :project_name %>
-    <%= f.input :task, collection: Task.all.map{|i| [i.theme, i.id.as_json.values[0]]}, input_html: { multiple: true } %>
-    <%= f.input :description %>
-    <%= f.hidden_field :user_id, value: @user.id.as_json.values[0]%>
+  <div class="field">
+    <%= f.label :project_name %>
+    <%= f.text_field :project_name, value: @project.project_name %>
+  </div>
+  <div class="field">
+    <%= f.label :description %>
+    <%= f.text_area :description, value: @project.description, :class => "tinymce", :rows => 10, :cols => 20%>
+  </div>
+
+    <%= f.hidden_field :id, value: @project.id%>
+
   </div>
 
   <div class="form-actions">
-    <%= f.button :submit %>
+    <%= f.submit %>
   </div>
-<% end %>
 
+<% end %>
 <%= link_to 'Show', @project %> |
 <%= link_to 'Back', user_projects_path(@user) %>
+
+<%= tinymce %>
+<% console %>

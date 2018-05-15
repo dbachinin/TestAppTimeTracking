@@ -36,6 +36,7 @@ class ProjectsController < ApplicationController
   # GET /projects/1/edit
   def edit
     @user = current_user
+    @uid = @project.uid
   end
 
   # POST /projects
@@ -60,15 +61,16 @@ class ProjectsController < ApplicationController
   # PATCH/PUT /projects/1.json
   def update
     @user = current_user
-    @project = Project.find(params[:id])
-    @project.tasks = params[:project][:task][1..-1]
+    @project = Project.find(params[:uid])
+    @project.uid = @project.uid_back
+    # @project.tasks = params[:project][:task][1..-1]
     respond_to do |format|
       if @project.update(project_params)
-        format.html { redirect_to [@user,@project], notice: 'Project was successfully updated.' }
-        format.json { render :show, status: :ok, location: [@user,@project] }
+        format.html { redirect_to project_path(@project.uid), notice: 'Project was successfully updated.' }
+        format.json { render :show, status: :ok, location: project_path(@project.uid) }
       else
         format.html { render :edit }
-        format.json { render json: [@user,@project].errors, status: :unprocessable_entity }
+        format.json { render json: project_path(@project.uid).errors, status: :unprocessable_entity }
       end
     end
   end
@@ -96,6 +98,6 @@ class ProjectsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def project_params
-      params.permit(:id, :project_name, :description, :uid, :user_id)
+      params.permit(:id, :project_name, :description, :uid, :user_ids, :uid_back)
     end
 end

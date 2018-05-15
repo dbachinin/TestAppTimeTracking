@@ -12,13 +12,15 @@ class UsersController < ApplicationController
   
   def edit
   end
+  n=0
   def change_pic
     id = params[:id]
-    create_avatar(id)
     user = User.find(id)
-    file = "tmp/#{id}.png"
+    create_avatar(user.id)
+    file = "tmp/#{user.id}.png"
     user.pic = BSON::Binary.new(File.read(file))
-    FileUtils.rm(file)
+    user.update
+    FileUtils.rm(file) if File.exist?(file)
     respond_to do |format|
       format.js
     end
@@ -46,7 +48,7 @@ end
 
   private
   def user_params
-    params.require(:user).permit(:avatar, :admin, :password, :password_confirmation)
+    params.require(:user).permit(:pic, :name, :email, :admin, :password, :password_confirmation, :fname, :lname, :b_date, :post)
   end
 
 end

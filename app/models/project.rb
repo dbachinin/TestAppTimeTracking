@@ -2,10 +2,10 @@ class Project
   include Mongoid::Document
   attr_accessor :task
   field :project_name, type: String
-  field :tasks, type: Array, default: []
+  field :uid_back, type: String
   field :description, type: String
   field :uid, type: String
-  field :user_id, type: String
+  field :user_ids, type: Array, default: []
   
   belongs_to :user
   has_many :project, autosave: true
@@ -14,6 +14,10 @@ class Project
   
   def gen_uid
     self.uid = SecureRandom.uuid[6..12]
+    self.uid_back = self.uid
   end
-
+protected
+# def attributes_protected_by_default
+#   super.uid
+# end
 end

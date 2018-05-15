@@ -36,10 +36,22 @@
           <p>You will receive an email to verify your account.</p>
           <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
           <div class="form-group">
-            <%= f.text_field :name,placeholder: "You loginame", class: "form-control" %>
+            <%= f.text_field :name, placeholder: "You loginame", class: "form-control" %>
           </div>
           <div class="form-group">
-            <%= f.email_field :email,placeholder: "Email", autofocus: true, autocomplete: "email", class: "form-control" %>
+            <%= f.text_field :fname, placeholder: "You first name", class: "form-control" %>
+          </div>
+          <div class="form-group">
+            <%= f.text_field :lname, placeholder: "You last name", class: "form-control" %>
+          </div>
+          <div class="input-daterange input-group" id="datepicker">
+            <%= f.text_field :b_date, placeholder: "You birth date", class: "form-control" %>
+          </div>
+          <div class="form-group">
+            <%= f.email_field :email, placeholder: "Email", autofocus: true, autocomplete: "email", class: "form-control" %>
+          </div>
+          <div class="form-group">
+            <%= f.text_field :post, placeholder: "You post", class: "form-control" %>
           </div>
           <div class="form-group">
             <%= f.label :password %>
@@ -64,3 +76,38 @@
   </article>
 </div>
       </aside> <!-- col.// -->
+<script >
+  // var date = new Date();
+  // var today = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+  // (function() {
+  //   $(document).on('turbolinks:load', function() {
+  //     return $('#datepicker').datepicker({
+  //       format: 'yyyy-mm-dd',
+  //       todayBtn: true,
+  //       daysOfWeekHighlighted: '0,6',
+  //       todayHighlight: true,
+  //       autoclose: true,
+  //       startDate: today,
+  //       orientation: "auto left"
+  //     });
+  //   });
+  // }).call(this);
+
+
+
+  var date = new Date();
+  var today = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+  (function() {
+    $(document).on('turbolinks:load', function() {
+      return $('#datepicker').datepicker({
+        format: 'yyyy-mm-dd',
+        weekStart: 1,
+        todayBtn: "linked",
+        clearBtn: true,
+        autoclose: true,
+        daysOfWeekHighlighted: '0,6',
+        toggleActive: true
+    });
+  });
+}).call(this);
+</script>

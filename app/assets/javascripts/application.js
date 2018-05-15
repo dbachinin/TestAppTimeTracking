@@ -17,4 +17,5 @@
 //= require bootstrap-datepicker/core
 //= require bootstrap-datepicker/locales/bootstrap-datepicker.en-GB.js
 //= require tinymce-jquery
+//= require popper
 //= require_tree .

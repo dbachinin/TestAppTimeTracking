@@ -357,6 +357,7 @@ DEPENDENCIES
   mongoid-rspec
   nested_form
   poltergeist
+  popper_js
   pry-rails
   puma (~> 3.7)
   rails (~> 5.1.5)
