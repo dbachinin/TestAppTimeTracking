@@ -20,7 +20,7 @@
 </style>
 <% @tasks = Task.where(project_id: @project.id) %>
 <% danger = []; @tasks.each do |task|
-  if (Date.today..Date.parse(task.teken_time)).count < 6
+  if (Date.today..Date.parse(task.teken_time)).count < 6 and task.logs.last != "Fixed"
     danger.push(task)
     end %>
         <%end%>

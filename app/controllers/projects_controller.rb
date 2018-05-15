@@ -43,7 +43,7 @@ class ProjectsController < ApplicationController
   # POST /projects.json
   def create
     @user = current_user
-    @project = Project.create(params[:uid])
+    @project = Project.create(project_params)
     @project.uid = File.read('tmp/uid')
     respond_to do |format|
       if @project.save
