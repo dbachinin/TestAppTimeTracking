@@ -44,7 +44,6 @@ class ProjectsController < ApplicationController
   def create
     @user = current_user
     @project = Project.create(project_params)
-    @project.uid = File.read('tmp/uid')
     respond_to do |format|
       if @project.save
         # format.js
