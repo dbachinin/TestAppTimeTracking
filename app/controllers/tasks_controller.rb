@@ -70,14 +70,14 @@ class TasksController < ApplicationController
     @user = current_user
     @project = Project.find(params[:project_uid])
     @task = Task.create(task_params)
-    # create_task_icon(@task.id)
+    old_task = @task
     @task.coments.push(params[:task][:coment])
     @task.logs.push(params[:task][:log]||"Open")
     @task.creator = @user.id.as_json.values[0]
     @task.date_range = (Date.parse(@task.estimate_time)..Date.parse(@task.teken_time))
     @task.user_id = params[:task][:user_id][1..-1]
     @task.project_id = @project.id.as_json.values[0]
-    old_task = @task
+    @task.estimate_time = Time.now
     respond_to do |format|
       if @task.save
         TasksMailer.submitted(@task.user_id,@task,old_task).deliver_now
@@ -96,11 +96,17 @@ class TasksController < ApplicationController
     old_task = Task.find(params[:id])
     @task.date_range = (Date.parse(@task.estimate_time)..Date.parse(@task.teken_time))
     params[:task][:user] ? @task.user_id = params[:task][:user].split : @task.user_id = params[:task][:user_id][1..-1]
+    if params[:task][:log] == "Open" and @task.logs.last != old_task.logs.last
+      @task.estimate_time = Time.now.to_s
+    end
+    if params[:task][:log] == "Fixed"
+      @task.teken_time = Time.now.to_s
+      @lead_time = ((@task.teken_time.to_time - @task.estimate_time.to_time) / 1.hours)
+    end
     if @task.user_id.include?(current_user.id.as_json.values[0]) or current_user.admin
       @task.coments.push(params[:task][:coment]) if params[:task][:coment]
       @task.logs.push(params[:task][:log])
-      # if @task.logs.last == "Finish"
-
+      File.write('tmp/tmp1',params[:task][:log])
       respond_to do |format|
         if @task.update(task_params)
           TasksMailer.submitted(@task.user_id,@task,old_task).deliver_now
@@ -121,7 +127,7 @@ class TasksController < ApplicationController
   def destroy
     @user = current_user
     @project = Project.find(@task.project_id)
-    FileUtils.rm_f("avatars/#{@task.id}")
+    # FileUtils.rm_f("avatars/#{@task.id}")
     @task.destroy
     respond_to do |format|
       format.html { redirect_to project_tasks_path(@task.project_id), notice: 'Task was successfully destroyed.' }

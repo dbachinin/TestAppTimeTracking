@@ -8,11 +8,7 @@
 <li class="nav-item">
     <a><%= link_to "Projects", user_projects_path(@user), class: "nav-link" if @user&.id %></a>
 </li>
-<% if (@task&.project_id) %>
-<li class="nav-item">
-  <a><%= link_to "Tasks", project_tasks_path(Project.find(@task.project_id)), class: 'nav-link' %></a>
-</li>
-<%end%>
+
 <li class="nav-item">
 <a><%= link_to "Log out", destroy_session_path(:user), method: :delete, class: 'nav-link'  %></a>
 </li>

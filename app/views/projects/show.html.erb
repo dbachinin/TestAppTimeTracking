@@ -1,34 +1,54 @@
 
-  <div class="py-5" >
-    <div class="container">
-      <div class="row">
-        <div class="col-md-6">
-          <div class="col-12 col-md-12">
-            <h1 class="display-3 text-left"><%= @project.project_name %></h1>
-            <p class="lead text-muted text-left">Created by <%= User.find(@project.user_id).name %> </p>
-          </div>
+<div class="py-5" >
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="col-12 col-md-12">
+          <h1 class="display-3 text-left"><%= @project.project_name %></h1>
+          <p class="lead text-muted text-left">Created by <%= User.find(@project.user_id).name %> </p>
         </div>
-        <div class="col-md-6">
-          <div class="card my-4">
-            <div class="card-header">
-              <h5 class="mb-0 text-center">Description:</h5>
-            </div>
-            <div class="card-body">
-              <p class="card-text"><%= @project.description %></p>
-            </div>
-            <div class="card-footer">
-              <div class="alert alert-info" role="alert">
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">×</button>
-            <h4 class="alert-heading"><%= link_to @project.uid, project_path(@project.uid) %> </h4>
-            <p class="mb-0">It`s UID you project.</p>
+        <div class="row">
+        <%= button_to 'Delete Project', project_path(@project), method: :delete, data: { confirm: "Are you sure delete project #{@project.project_name} with all project task?" }, class: "btn btn-danger m-1" %>
+        <%= button_to 'Edit', edit_project_path(@project), method: :get, class: "btn btn-secondary m-1" %>
+        <%= button_to 'Back', user_projects_path(@user), method: :get, class: "btn btn-secondary m-1" %>
+      </div>
+        <hr>
+        <p>The project have <%= Task.where(project_id: @project.id).count %> tasks</p>
+        <p>Deadline is approaching %></p>
+      </div>
+      <div class="col-md-6">
+        <div class="card my-4">
+          <div class="card-header">
+            <h5 class="mb-0 text-center">Description:</h5>
           </div>
+          <div class="card-body">
+            <p class="card-text"><%= @project.description.html_safe %></p>
+          </div>
+          <div class="card-footer">
+            <div class="alert alert-info" role="alert">
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">×</button>
+              <h4 class="alert-heading"><%= link_to @project.uid, project_path(@project.uid) %> </h4>
+              <p class="mb-0">It`s UID you project.</p>
             </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-  <!-- Tasks cards -->
- <%= render :template => 'tasks/index' %>
-  <%= link_to 'Edit', edit_project_path(@project) %> |
-<%= link_to 'Back', user_projects_path(@user) %>
+</div>
+<%= button_to 'Create new task', new_project_task_path(@project.uid), method: :get, class: "btn btn-primary m-2" %>
+<ul class="breadcrumb" >
+  <li class="breadcrumb-item">
+    <%= link_to "Projects", user_projects_path(@user, @project) %>
+  </li>
+  <li class="breadcrumb-item">
+    <a href="#">New Project</a>
+  </li>
+  <li class="breadcrumb-item">
+    <a href="#">Project <%= truncate("#{@project.project_name}",length: 10)%></a>
+  </li>
+</ul>
+<hr>
+
+<!-- Tasks cards -->
+<%= render :template => 'tasks/index' %>

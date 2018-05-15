@@ -15,6 +15,10 @@ class UsersController < ApplicationController
   def change_pic
     id = params[:id]
     create_avatar(id)
+    user = User.find(id)
+    file = "tmp/#{id}.png"
+    user.pic = BSON::Binary.new(File.read(file))
+    FileUtils.rm(file)
     respond_to do |format|
       format.js
     end

@@ -22,11 +22,19 @@ class Task
   attr_accessor :coment, :log, :user
   # belongs_to :user
   after_initialize :gen_pic, if: :new_record?
+  before_save :write_finish
   def gen_pic
     create_task_icon(self.id)
     file = "tmp/#{self.id}.png"
     self.pic = BSON::Binary.new(File.read(file))
     FileUtils.rm(file)
+  end
+
+  def write_finish
+    if self.log == "Fixed"
+      self.teken_time = Time.now
+      self.date_range = (Date.parse(self.estimate_time)..Date.parse(self.teken_time))
+    end
   end
   # before_save do
   #   self.logs << self.log

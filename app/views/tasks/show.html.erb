@@ -6,8 +6,9 @@
     <div class="row">
       <div class="col-sm">
         <p>
-          <h3><strong>Project: <%= Project.find(@task.project_id).project_name %> </strong></h3>
+          <h3><strong>Project: <%= Project.find(@task.project_id).project_name %></strong></h3>
         </p>
+
         <div class="card">
           <div class="card-header"><b>Contributor(s):</b></div>
           <div class="card-body"><%= f.input :user_id, collection: User.all.map{|i| [i.name, i.id.as_json.values[0]]}, input_html: { multiple: true } %></div>
@@ -35,15 +36,16 @@
         </div>
       </div>
       <div class="col-sm-4">
-        <h3><strong>Task: <%= @task.theme %></strong></h3>
+        <h3><strong>Task: <%= @task.theme %>  <%= "Is finished and #{((@task.teken_time.to_time - @task.estimate_time.to_time) / 1.hours).to_i} are hour spent" if @task.logs.last == "Fixed" %> </strong></h3>
       </br>
 
         <%= render partial: "layouts/pic_task", locals: {id: @task.id} %>
 
-      <div class="row">
+      <div class="row d-none">
         <%= button_to 'Edit', edit_task_path(@task), method: :get, class: "btn btn-secondary m-2" %>
         <%= button_to 'Back', project_tasks_path(Project.find(@task.project_id)), method: :get, class: "btn btn-secondary m-2" %>
       </div>
+              <%= link_to 'Edit', edit_task_path(@task), class: "btn btn-secondary m-2" %>
       <p>
         <%= @task.description %>
       </p>
@@ -83,7 +85,17 @@
     </div>
   </div>
 
-
+<ul class="breadcrumb" >
+  <li class="breadcrumb-item">
+    <%= link_to "Projects", user_projects_path(@user, @project) %>
+  </li>
+  <li class="breadcrumb-item">
+    <%= link_to Project.find(@task.project_id).project_name, project_path(Project.find(@task.project_id)) %>
+  </li>
+  <li class="breadcrumb-item">
+    <a href="#"><%= @task.theme %></a>
+  </li>
+</ul>
   <script >
     var date = new Date();
     var today = new Date(date.getFullYear(), date.getMonth(), date.getDate());
