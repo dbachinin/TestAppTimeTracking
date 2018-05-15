@@ -34,6 +34,10 @@ class User
   validates :name, presence: true, uniqueness: {case_sensitive: false}
 
   validates_format_of :name, with: /^[a-zA-Z0-9_\.]*$/, multiline: true
+
+  before_save do
+    self.name = self.name.downcase
+  end
   def add_admin
     unless User.first
       self.admin = 1
@@ -42,9 +46,9 @@ class User
   
 def self.find_for_database_authentication(conditions={})
   if conditions[:name].include?("@")
-   find_by(email: conditions[:name])
+   find_by(email: conditions[:name].downcase) if User.where(email: conditions[:name].downcase).exists?
   else
-   find_by(name: conditions[:name])
+   find_by(name: conditions[:name].downcase) if User.where(name: conditions[:name].downcase).exists?
  end
 end
 
