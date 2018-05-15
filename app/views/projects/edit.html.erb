@@ -1,4 +1,4 @@
-<%= form_with url: @project, action: :update,method: :put, remote: false do |f| %>
+<%= form_with url: @project, action: :update,method: :put, uid: File.read('tmp/uid'), remote: false do |f| %>
 <% if @project.errors.any? %>
 <div id="error_explanation">
       <h2><%= pluralize(@project.errors.count, "error") %> prohibited this @project from being saved:</h2>

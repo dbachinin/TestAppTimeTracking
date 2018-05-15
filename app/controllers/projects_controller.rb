@@ -36,15 +36,15 @@ class ProjectsController < ApplicationController
   # GET /projects/1/edit
   def edit
     @user = current_user
-    @uid = @project.uid
+    File.write('tmp/uid', @project.uid)
   end
 
   # POST /projects
   # POST /projects.json
   def create
     @user = current_user
-
-    @project = Project.create(project_params)
+    @project = Project.create(params[:uid])
+    @project.uid = File.read('tmp/uid')
     respond_to do |format|
       if @project.save
         # format.js
@@ -62,7 +62,6 @@ class ProjectsController < ApplicationController
   def update
     @user = current_user
     @project = Project.find(params[:uid])
-    @project.uid = @project.uid_back
     # @project.tasks = params[:project][:task][1..-1]
     respond_to do |format|
       if @project.update(project_params)
@@ -98,6 +97,6 @@ class ProjectsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def project_params
-      params.permit(:id, :project_name, :description, :uid, :user_ids, :uid_back)
+      params.permit(:id, :project_name, :description, :uid, :user_id)
     end
 end
