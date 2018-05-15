@@ -43,7 +43,7 @@ module AvatarHelper
 
 		def create_icon
 			list = Magick::ImageList.new
-			list.new_image(150, 150, Magick::SolidFill.new('white'))
+			list.new_image(60, 60, Magick::SolidFill.new('white'))
 			pic = Magick::Draw.new
 			pictarr = []
 			until pictarr.include?("1") and pictarr.include?("0")
@@ -51,14 +51,14 @@ module AvatarHelper
 				9.times{|i| pictarr << ["0","1"].sample }
 			end
 			i = 0
-			(0..100).step(50) do |y|
-				(0..100).step(50) do |x|
+			(0..40).step(20) do |y|
+				(0..40).step(20) do |x|
 					color = Magick::colors.map{ |colorinfo|colorinfo.name}.grep_v(%r{white|gray|black|light|yellow|cream|beige|snow|ice|ivory|[0-9]}i).sample
 					pic.fill_opacity(0)
 					pic.stroke(color)
 					pic.fill(color) 
 					pic.stroke_width(1)
-					pic.rectangle(x,y,x+50,y+50) if pictarr[i] != 0
+					pic.rectangle(x,y,x+20,y+20) if pictarr[i] != 0
 					i+=1
 				end
 			end
