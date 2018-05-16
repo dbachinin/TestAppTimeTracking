@@ -88,9 +88,17 @@ class ProjectsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_project
       if params[:uid]&.gsub(/\s+/, "")&.length == 7
-        @project = Project.find_by(uid: params[:uid].gsub(/\s+/, ""))
+        if Project.where(uid: params[:uid].gsub(/\s+/, "")).exists?
+          @project = Project.find_by(uid: params[:uid].gsub(/\s+/, ""))
+        else
+          redirect_to user_projects_path(current_user), info: "Project with id #{params[:uid]} not created."
+        end
       else
-        @project = Project.find(params[:uid])
+        if @project = Project.where(id: params[:uid]).exists?
+          @project = Project.find(params[:uid])
+        else
+          redirect_to user_projects_path(current_user), info: "Project with id #{params[:uid]} not created."
+        end        
       end
     end
 

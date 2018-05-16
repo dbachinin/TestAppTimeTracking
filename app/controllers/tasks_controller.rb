@@ -138,7 +138,11 @@ class TasksController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_task
-      @task = Task.find(params[:id])
+      if Task.where(id: params[:id]).exists?
+        @task = Task.find(params[:id])
+      else
+        redirect_to user_projects_path(current_user), info: "Task with id #{params[:id]} not created."
+      end
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
