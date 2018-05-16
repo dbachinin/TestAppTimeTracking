@@ -16,20 +16,33 @@
 					<%= f.label :submit, "Admin role enabled" %>
 					<%= f.input_field :admin, as: :boolean if current_user.admin%>
 				</div>
-				<div class="input-group"><%= f.input_field :fname, value: @user.fname %> First name</div>
-				<div class="input-group"><%= f.input_field :lname, value: @user.lname %> Last name</div>
-				<div class="input-group"><%= f.input_field :name, value: @user.name %> Login name</div>
-				<div class="input-group"><%= f.input_field :post, value: @user.post %> Post</div>
+				<div class="input-group"><%= f.input_field :fname, value: @user.fname %> &nbsp;First name</div>
 				<br />
+				<div class="input-group"><%= f.input_field :lname, value: @user.lname %> &nbsp;Last name</div>
+				<br />
+				<div class="input-group"><%= f.input_field :name, value: @user.name %> &nbsp;Login name</div>
+				<br />
+				<div class="input-group"><%= f.input_field :post, value: @user.post %> &nbsp;Post</div>
+				<br />
+				<div class="input-daterange input-group" id="datepicker">
+	              <%= f.text_field :b_date, placeholder: "You birth date", class: "form-control" %>&nbsp;Birth Date
+	            </div>
 			</p>
 		</div>
-		<%= f.button :submit, class: "btn btn-primary" %>
+
+	<div class="card-footer">
+		<%= f.button :submit, class: "d-block mx-auto btn btn-primary" %>
 		<% end %>
+		<br />
+		<% if current_user.id == @user.id %>
+		<%= button_to "Change your password", edit_user_registration_path, method: :get, class: "d-block mx-auto btn btn-primary" %>
+		<% end -%>
+	</div>
 	</div>
 </div>
-<% if current_user.id == @user.id %>
-<%= button_to "Change your password", edit_user_registration_path, method: :get, class: "d-block mx-auto btn btn-primary" %>
-<% end -%>
+
+
+
 <br />
 <hr>
 <br />
@@ -44,3 +57,20 @@
     <a href="#"><%= @user.name %></a>
   </li>
 </ul>
+<script type="text/javascript">
+	  var date = new Date();
+	  var today = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+	  (function() {
+	    $(document).on('turbolinks:load', function() {
+	      return $('#datepicker').datepicker({
+	        format: 'yyyy-mm-dd',
+	        weekStart: 1,
+	        todayBtn: "linked",
+	        clearBtn: true,
+	        autoclose: true,
+	        daysOfWeekHighlighted: '0,6',
+	        toggleActive: true
+	    });
+	  });
+	}).call(this);
+</script>

@@ -1,6 +1,11 @@
 Rails.application.routes.draw do
   post 'users/change_pic'
   devise_for :users, :path => 'users'
+  # devise_for :users,
+  #              controllers: {
+  #                 registrations: 'registrations',
+  #                 sessions: 'sessions'
+  #              }
   resources :users, shallow: true do
   	resources :projects, param: :uid do
       resources :tasks

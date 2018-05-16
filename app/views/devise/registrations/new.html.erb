@@ -1,34 +1,114 @@
-<h2>Sign up</h2>
+<aside class="d-block mx-auto col-sm-4">
+  <h2>Sign in or Sign up</h2>
+  <div class="card">
+    <article class="card-body">
+      <ul class="nav nav-tabs">
+        <li class="nav-item "><a data-toggle="tab" href="#signin" class="nav-link ">Sign in</a>
+        </li>
+        <li class="nav-item fade show active"><a data-toggle="tab" href="#signup" class="nav-link">Sign up</a>
+        </li>
+      </ul>
+      <div class="tab-content">
+        <div id="signin" class="tab-pane fade">
+          <h3>SIGN IN</h3>
+          <%= form_for(:user, url: session_path(:user)) do |f| %>
+          <div class="form-group">
+            <%= f.label :name, class: "sr-only" %> <br />
+            <%= f.text_field :name, placeholder: "You name or email", autofocus: true, class: "form-control"%>
+          </div>
+          <div class="form-group">
+            <%= f.label :password, class: "sr-only", for: "InputPassword" %><br />
+            <%= f.password_field :password, placeholder: "You password", autocomplete: "off", id: "InputPassword2", class: "form-control" %>
+          </div>
+          <div class="form-group">
+            <label>
+              <%= f.check_box :remember_me %>
+              <%= f.label :remember_me, "Save password" %></label>
+            </div>
+            <div class="form-group">
+              <%= f.submit "Log in", class: "btn btn-primary btn-block" %>
+            </div>
+            <% end %>
+          </form>
+        </div>
+        <div id="signup" class="tab-pane fade show active">
+          <h3>SIGN UP</h3>
+          <p>You will receive an email to verify your account.</p>
+          <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+           <%= render 'layouts/errors', object: f.object -%>
+          <div class="form-group">
+            <%= f.text_field :name, placeholder: "You loginame", class: "form-control" %>
+          </div>
+          <div class="form-group">
+            <%= f.text_field :fname, placeholder: "You first name", class: "form-control" %>
+          </div>
+          <div class="form-group">
+            <%= f.text_field :lname, placeholder: "You last name", class: "form-control" %>
+          </div>
+          <div class="input-daterange input-group" id="datepicker">
+            <%= f.text_field :b_date, placeholder: "You birth date", class: "form-control" %>
+          </div>
+          <div class="form-group">
+            <%= f.email_field :email, placeholder: "Email", autofocus: true, autocomplete: "email", class: "form-control" %>
+          </div>
+          <div class="form-group">
+            <%= f.text_field :post, placeholder: "You post", class: "form-control" %>
+          </div>
+          <div class="form-group">
+            <%= f.label :password %>
+            <% if @minimum_password_length %>
+            <em>(<%= @minimum_password_length %> characters minimum)</em>
+            <% end %><br />
+            <%= f.password_field :password,placeholder: "You password", autocomplete: "off", class: "form-control" %>
+          </div>
+          <div class="form-group">
+            <%= f.label :password_confirmation %><br />
+            <%= f.password_field :password_confirmation,placeholder: "Confirm you pass", autocomplete: "off", class: "form-control" %>
+          </div>
+          <div class="form-group">
+            <%= f.submit "Sign up" %>
+          </div>
+          <%end%>
 
-<%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
-  <%= devise_error_messages! %>
-  <div class="field">
-  <p><%= f.label :name %><br />
-  <%= f.text_field :name %></p>
-  </div>
+        </div>
+      </div>
+    </div>
+    <%= link_to "Forgot your password?", new_password_path(resource_name) %><br />
+  </article>
+</div>
+      </aside> <!-- col.// -->
+<script >
+  // var date = new Date();
+  // var today = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+  // (function() {
+  //   $(document).on('turbolinks:load', function() {
+  //     return $('#datepicker').datepicker({
+  //       format: 'yyyy-mm-dd',
+  //       todayBtn: true,
+  //       daysOfWeekHighlighted: '0,6',
+  //       todayHighlight: true,
+  //       autoclose: true,
+  //       startDate: today,
+  //       orientation: "auto left"
+  //     });
+  //   });
+  // }).call(this);
 
-  <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
-  </div>
 
-  <div class="field">
-    <%= f.label :password %>
-    <% if @minimum_password_length %>
-    <em>(<%= @minimum_password_length %> characters minimum)</em>
-    <% end %><br />
-    <%= f.password_field :password, autocomplete: "off" %>
-  </div>
 
-  <div class="field">
-    <%= f.label :password_confirmation %><br />
-    <%= f.password_field :password_confirmation, autocomplete: "off" %>
-  </div>
-
-  <div class="actions">
-    <%= f.submit "Sign up" %>
-  </div>
-<% end %>
-
-<%= render "devise/shared/links" %>
-
+  var date = new Date();
+  var today = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+  (function() {
+    $(document).on('turbolinks:load', function() {
+      return $('#datepicker').datepicker({
+        format: 'yyyy-mm-dd',
+        weekStart: 1,
+        todayBtn: "linked",
+        clearBtn: true,
+        autoclose: true,
+        daysOfWeekHighlighted: '0,6',
+        toggleActive: true
+    });
+  });
+}).call(this);
+</script>
