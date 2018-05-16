@@ -6,6 +6,7 @@
         <div class="col-12 col-md-12">
           <h1 class="display-3 text-left"><%= @project.project_name %></h1>
           <p class="lead text-muted text-left">Created by <%= User.find(@project.user_id).name %> </p>
+          <p class="text-left"><b>Contributors:</b> <%= @project.user_ids.map{|i| User.find(i).name}.join(', ')%>
         </div>
         <div class="row">
         <%= button_to 'Delete Project', project_path(@project), method: :delete, data: { confirm: "Are you sure delete project #{@project.project_name} with all project task?" }, class: "btn btn-danger m-1" %>

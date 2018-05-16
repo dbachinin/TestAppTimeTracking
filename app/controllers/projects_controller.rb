@@ -9,7 +9,8 @@ class ProjectsController < ApplicationController
       @user = current_user
     else
       @user = current_user
-      @projects = Project.find(Task.where(user_id: @user.id.as_json.values[0]).map{|i|i.project_id})
+      # pr = Project.all.select{|i| i.user_ids.include?(@user.id.as_json.values[0])}
+      @projects = Project.all.select{|i| i.user_ids.include?(@user.id.as_json.values[0])}
     end
   end
 
@@ -36,7 +37,6 @@ class ProjectsController < ApplicationController
   # GET /projects/1/edit
   def edit
     @user = current_user
-    File.write('tmp/uid', @project.uid)
   end
 
   # POST /projects
@@ -44,6 +44,7 @@ class ProjectsController < ApplicationController
   def create
     @user = current_user
     @project = Project.create(project_params)
+    @project.user_ids  = params[:user][1..-1]
     respond_to do |format|
       if @project.save
         # format.js
@@ -104,6 +105,6 @@ class ProjectsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def project_params
-      params.permit(:id, :project_name, :description, :uid, :user_id)
+      params.permit(:id, :project_name, :description, :uid, :user_id, :user)
     end
 end

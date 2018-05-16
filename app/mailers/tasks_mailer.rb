@@ -9,12 +9,13 @@ class TasksMailer < ApplicationMailer
     @user = user
     @task = task
     @old_task = old_task
+    task == old_task ? stat = "create" : stat = "update" 
 	@task_type = [["Error", 0],["Cosmetic", 1],["Exception", 2], ["Teature", 3],["Task", 4], ["Usability", 5], ["Performance", 6]]
 	@task_priority = [["Emergency", 0], ["Critical", 1], ["Serious", 2], ["Regular", 3], ["Low", 4]]
   mails_to = User.find(@task.user_id).map{|i|i.email}
   mails_to << User.find(@task.creator).email
     
-    	mail(to: mails_to.uniq, subject: "#{@task.creator} #{task.theme} in #{Project.find(@task.project_id).project_name}")
+    	mail(to: mails_to.uniq, subject: "#{User.find(@task.creator).name} #{stat} #{task.theme} in #{Project.find(@task.project_id).project_name}")
     
   end
   # def messages()

@@ -24,7 +24,8 @@
         <div class="card-header"><b>Contributor(s):</b></div>
 
         <div class="card-body">
-          <%= f.input :user_id, collection: User.all.map{|i| [i.name, i.id.as_json.values[0]]}, input_html: { multiple: true } %>
+          <% users =  @users.map{|i| i}; users << current_user unless @users.include?(current_user)%>
+          <%= f.input :user_id, collection: users.map{|i| [i.name, i.id.as_json.values[0]]}, input_html: { multiple: true } %>
           </div>
 
       </div>

@@ -23,6 +23,7 @@ class TasksController < ApplicationController
     # @tasks = Task.all
     @user = current_user
     @project = Project.find(params[:project_uid])
+    @users = @project.user_ids.map{|i| User.find(i) }
     @tasks = Task.where(project_id: @project.id)
   end
 
@@ -31,20 +32,9 @@ class TasksController < ApplicationController
   def show
     @comments = Task.find(params[:id]).coments
     @user = current_user
-    @project = Task.find(params[:id]).project[0]
-  end
 
-  def edit_coments
-    @comments = Task.find(params[:id]).coments
-    @user = current_user
-  end
-
-  def add_coments
-    @user = current_user
-    @task = Task.find(params[:id])
-    @coments = @task.coments
-    @coment = params[:task][:coment]
-    @coments.push(@coment)
+    @project = Project.find(Task.find(params[:id]).project_id)
+    @users = @project.user_ids.map{|i| User.find(i) }
   end
 
   def add_logs
@@ -55,6 +45,7 @@ class TasksController < ApplicationController
   def new
     @user = current_user
     @project = Project.find_by(uid: params[:project_uid])
+    @users = @project.user_ids.map{|i| User.find(i) }
     @task = Task.new
 
   end

@@ -10,7 +10,9 @@
           <div class="col-md-3">
 
             <div class="card">
-             <dev style="background-color: black;color:white;"><center> <%= "FINISHED" if task.logs.last == "Fixed" %></center></dev>
+             <dev style="background-color: black;color:white;"><center> <%= "FIXED" if task.logs.last == "Fixed" %></center></dev>
+             <dev style="background-color: red;color:white;"><center> <%= "OVERDUE" if task.teken_time.to_time < Time.now and task.logs.last != "Fixed"  %></center></dev>
+             <dev style="background-color: #D1ECF1;"><center> <%= "#{((task.teken_time.to_time - task.estimate_time.to_time) / 1.hours).to_i} HOURS LEFT" if task.teken_time.to_time > Time.now and task.logs.last != "Fixed" %></center></dev>
              <img src="data:image/png;base64,<%=Base64.encode64(task.pic.data)%>", class="img-fluid rounded-circle w-2 mx-auto mt-3 mx-auto d-block" >
              <div class="card-body">
               <h4 class="card-title"><%= link_to "#{task.theme}", task %></h4>

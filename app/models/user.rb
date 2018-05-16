@@ -9,6 +9,7 @@ class User
   # after_initialize :get_logname, unless: :new_record?
   before_save :gen_pic, if: :new_record?
   before_save :add_admin
+  before_destroy :delete_users
   ## Database authenticatable
   field :email,              type: String, default: ""
   field :encrypted_password, type: String, default: ""
@@ -35,6 +36,10 @@ class User
   field :avatar,             type: String
   field :admin,              type: Mongoid::Boolean
   field :pic,                type: BSON::Binary
+  field :confirmation_token,   type: String
+  field :confirmed_at,         type: Time
+  field :confirmation_sent_at, type: Time
+  field :unconfirmed_email,    type: String # Only if using reconfirmable
   validates :name, presence: true, uniqueness: {case_sensitive: false}
 
   validates_format_of :name, with: /^[a-zA-Z0-9_\.]*$/, multiline: true
@@ -76,17 +81,28 @@ end
     FileUtils.rm(file)
   end
   
-  has_many :project, autosave: true
-  has_many :task, autosave: true
-  accepts_nested_attributes_for :project, :task, allow_destroy: true
+  def delete_users
+    id = self.id
+    Project.where(user_id: id).each do |i|
+      Task.where(project_id: i.id).delete
+    end
+    Project.where(user_id: id).delete
+    Project.all.each do |project|
+      project.update if project.user_ids.delete(id.as_json.values[0])
+    end
+    Task.all.each do |task|
+      task.update if task.user_id.delete(id.as_json.values[0])
+    end
+    Task.where(creator: id).delete
+  end
+
+  # has_many :project, autosave: true
+  # has_many :task, autosave: true
+  # accepts_nested_attributes_for :project, :task, allow_destroy: true
   # accepts_nested_attributes_for :project
   # attr_accessor :name, :email, :password, :password_confirmation, :remember_me
 
-  ## Confirmable
-  field :confirmation_token,   type: String
-  field :confirmed_at,         type: Time
-  field :confirmation_sent_at, type: Time
-  field :unconfirmed_email,    type: String # Only if using reconfirmable
+  ## Confirmabl
 
   ## Lockable
   # field :failed_attempts, type: Integer, default: 0 # Only if lock strategy is :failed_attempts
