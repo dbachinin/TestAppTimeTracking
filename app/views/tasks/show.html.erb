@@ -47,16 +47,16 @@
         <h3><strong>Task: <%= @task.theme %></strong>  </h3>
         <h2 style="background-color:#efd0d0; color:#510000;"><%= "#{((@task.teken_time.to_time - @task.estimate_time.to_time) / 1.hours).to_i} hours passed"  %> </h2>
         <%end%>
-          
+
       </br>
 
-        <%= render partial: "layouts/pic_task", locals: {id: @task.id} %>
+      <%= render partial: "layouts/pic_task", locals: {id: @task.id} %>
 
       <div class="row d-none">
         <%= button_to 'Edit', edit_task_path(@task), method: :get, class: "btn btn-secondary m-2" %>
         <%= button_to 'Back', project_tasks_path(Project.find(@task.project_id)), method: :get, class: "btn btn-secondary m-2" %>
       </div>
-              <%= link_to 'Edit', edit_task_path(@task), class: "btn btn-secondary m-2" %>
+      <%= link_to 'Edit', edit_task_path(@task), class: "btn btn-secondary m-2" %>
       <p>
         <%= @task.description %>
       </p>
@@ -82,10 +82,26 @@
         <%= f.input :log, collection: @log, label: false, selected: @task.logs.last%>
       </p>
       <hr>
-      <div class="input-daterange input-group" id="datepicker">
-        <%= f.text_field :estimate_time,  class: "input-sm form-control"%>
-        <div class="input-group-addon">to</div>
-        <%= f.text_field :teken_time,  class: "input-sm form-control"%>
+      <div class="card">
+        <div class="card-header"><b>Sprint</b></div>
+        <div class="card-body">
+
+          <hr>
+          <p>Select start to end date of task</p>
+          <div class="input-daterange input-group" id="datepicker">
+            <%= f.text_field :estimate_time, value: @task.estimate_time, class: "input-sm form-control"%>
+            <div class="input-group-addon"> to </div>
+            <%= f.text_field :teken_time, value: @task.teken_time, class: "input-sm form-control"%>
+          </div>
+          <hr>
+          <p>Select start to end time of task</p>
+          <div class="input-daterange input-group">
+            <div class="form-inputs"><%= f.time_select :time_start, value: @estimate_time_to_form, class: "input-sm form-control"%></div>
+            <div class="input-group-addon"> to </div>
+            <div class="form-inputs"><%= f.time_select :time, value: @teken_time_to_form, class: "input-sm form-control"%></div>
+          </div>
+
+        </div>
       </div>
       <hr>
       <div class="row">
@@ -96,17 +112,17 @@
     </div>
   </div>
 
-<ul class="breadcrumb" >
-  <li class="breadcrumb-item">
-    <%= link_to "Projects", user_projects_path(@user, @project) %>
-  </li>
-  <li class="breadcrumb-item">
-    <%= link_to Project.find(@task.project_id).project_name, project_path(Project.find(@task.project_id)) %>
-  </li>
-  <li class="breadcrumb-item">
-    <a href="#"><%= @task.theme %></a>
-  </li>
-</ul>
+  <ul class="breadcrumb" >
+    <li class="breadcrumb-item">
+      <%= link_to "Projects", user_projects_path(@user, @project) %>
+    </li>
+    <li class="breadcrumb-item">
+      <%= link_to Project.find(@task.project_id).project_name, project_path(Project.find(@task.project_id)) %>
+    </li>
+    <li class="breadcrumb-item">
+      <a href="#"><%= @task.theme %></a>
+    </li>
+  </ul>
   <script >
     var date = new Date();
     var today = new Date(date.getFullYear(), date.getMonth(), date.getDate());

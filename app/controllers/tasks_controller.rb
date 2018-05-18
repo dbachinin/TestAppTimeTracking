@@ -35,6 +35,8 @@ class TasksController < ApplicationController
 
     @project = Project.find(Task.find(params[:id]).project_id)
     @users = @project.user_ids.map{|i| User.find(i) }
+    @teken_time_to_form = Time.parse(@task.teken_time.split[1])
+    @estimate_time_to_form = Time.parse(@task.estimate_time.split[1])
   end
 
   def add_logs
@@ -52,6 +54,8 @@ class TasksController < ApplicationController
 
   # GET /tasks/1/edit
   def edit
+    @project = Project.find(@task.project_id)
+    @users = @project.user_ids.map{|i| User.find(i) }
     @user = current_user
   end
 
@@ -60,15 +64,20 @@ class TasksController < ApplicationController
   def create
     @user = current_user
     @project = Project.find(params[:project_uid])
+    @users = @project.user_ids.map{|i| User.find(i) }
     @task = Task.create(task_params)
     old_task = @task
     @task.coments.push(params[:task][:coment])
     @task.logs.push(params[:task][:log]||"Open")
     @task.creator = @user.id.as_json.values[0]
+    time_start = params[:task].values[6] + ":" + params[:task].values[7]
+    time = params[:task].values[12] + ":" + params[:task].values[13]
+    @task.teken_time = Time.parse(params[:task][:teken_time] + "-" + time)
+    # @task.estimate_time = Time.parse(params[:task][:estimate_time] + "-" + time_start)
     @task.date_range = (Date.parse(@task.estimate_time)..Date.parse(@task.teken_time))
     @task.user_id = params[:task][:user_id][1..-1]
     @task.project_id = @project.id.as_json.values[0]
-    @task.estimate_time = Time.now
+    @task.estimate_time = Time.parse(params[:task][:estimate_time] + "-" + time_start)
     respond_to do |format|
       if @task.save
         TasksMailer.submitted(@task.user_id,@task,old_task).deliver_now
@@ -87,6 +96,14 @@ class TasksController < ApplicationController
     old_task = Task.find(params[:id])
     @task.date_range = (Date.parse(@task.estimate_time)..Date.parse(@task.teken_time))
     params[:task][:user] ? @task.user_id = params[:task][:user].split : @task.user_id = params[:task][:user_id][1..-1]
+    time_start = params[:task].values[12] + ":" + params[:task].values[13]
+    time = params[:task].values[17] + ":" + params[:task].values[18]
+    teken_time = Date.parse(params[:task][:teken_time]).to_s
+    estimate_time = Date.parse(params[:task][:estimate_time]).to_s
+    datetime1 = Time.parse(teken_time + "-" + time).to_s
+    datetime2 = Time.parse(estimate_time + "-" + time_start).to_s
+    @task.teken_time = ""
+    @task.estimate_time = ""
     if params[:task][:log] == "Open" and @task.logs.last != old_task.logs.last
       @task.estimate_time = Time.now.to_s
     end
@@ -97,9 +114,10 @@ class TasksController < ApplicationController
     if @task.user_id.include?(current_user.id.as_json.values[0]) or current_user.admin
       @task.coments.push(params[:task][:coment]) if params[:task][:coment]
       @task.logs.push(params[:task][:log])
-      File.write('tmp/tmp1',params[:task][:log])
+      @task.estimate_time = datetime2
+      @task.teken_time = datetime1
       respond_to do |format|
-        if @task.update(task_params)
+        if @task.update(upd_task_params)
           TasksMailer.submitted(@task.user_id,@task,old_task).deliver_now
           format.html { redirect_to @task, info: 'Task was successfully updated.' }
           format.json { render :show, status: :ok, location: @task }
@@ -108,6 +126,7 @@ class TasksController < ApplicationController
           format.json { render json: @task.errors, status: :unprocessable_entity }
         end
       end
+
     else
       redirect_to @task, info: 'Sorry. You mast by owner of this task. Call you administrator'
     end
@@ -121,7 +140,7 @@ class TasksController < ApplicationController
     # FileUtils.rm_f("avatars/#{@task.id}")
     @task.destroy
     respond_to do |format|
-      format.html { redirect_to project_tasks_path(@task.project_id), notice: 'Task was successfully destroyed.' }
+      format.html { redirect_to project_path(@project), notice: 'Task was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
@@ -137,7 +156,10 @@ class TasksController < ApplicationController
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
+    def upd_task_params
+      params.require(:task).permit(:user_id, :theme, :description, :date_range, :task_type, :task_priority, :coments, :creator, :project_id, :logs, :coment, :log)
+    end    
     def task_params
-      params.require(:task).permit(:theme, :description, :date_range, :task_type, :task_priority, :estimate_time, :coments, :user_id, :creator, :project_id, :logs, :teken_time, :coment, :log)
+      params.require(:task).permit(:user_id, :time_start, :time, :theme, :description, :date_range, :task_type, :task_priority, :estimate_time, :coments, :creator, :project_id, :logs, :teken_time, :coment, :log)
     end
 end

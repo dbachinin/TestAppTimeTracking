@@ -2,84 +2,99 @@
         <h3><strong>Project: <%= @project.project_name %> </strong></h3>
       </p>
       <hr>
-<%= simple_form_for([@project,@task]) do |f| %>
-<div class="container-fluid">
-  <div class="row">
-    <div class="col-sm">
-      <p><%= f.input :theme %></p>
-      </br>
-      <hr>
-      <p>Sprint</p>
-      <div class="input-daterange input-group" id="datepicker">
-      <%= f.text_field :estimate_time, value: Date.today, class: "input-sm form-control"%>
-      <div class="input-group-addon">to</div>
-      <%= f.text_field :teken_time, value: Date.tomorrow, class: "input-sm form-control"%>
-    </div>
-    <hr>
-      <p>
-        <%= f.input :description %>
-      </p>
-      <hr>
-            <div class="card">
-        <div class="card-header"><b>Contributor(s):</b></div>
+      <%= simple_form_for([@project,@task]) do |f| %>
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-sm">
+            <p><%= f.input :theme %></p>
+          </br>
+          <hr>
+          <div class="card">
+            <div class="card-header"><b>Sprint</b></div>
+            <div class="card-body">
 
-        <div class="card-body">
-          <% users =  @users.map{|i| i}; users << current_user unless @users.include?(current_user)%>
-          <%= f.input :user_id, collection: users.map{|i| [i.name, i.id.as_json.values[0]]}, input_html: { multiple: true } %>
+              <hr>
+              <p>Select start to end date of task</p>
+              <div class="input-daterange input-group" id="datepicker">
+                <%= f.text_field :estimate_time, value: Date.today, class: "input-sm form-control"%>
+                <div class="input-group-addon">to</div>
+                <%= f.text_field :teken_time, value: Date.today, class: "input-sm form-control"%>
+              </div>
+              <hr>
+              <p>Select start to end time of task</p>
+              <div class="input-daterange input-group">
+                <div class="form-inputs"><%= f.time_select :time_start, class: "input-sm form-control"%></div>
+                <div class="input-group-addon">to</div>
+                <div class="form-inputs"><%= f.time_select :time, class: "input-sm form-control"%></div>
+              </div>
+
+            </div>
+          </div>
+          <hr>
+          <p>
+            <%= f.input :description %>
+          </p>
+          <hr>
+          <div class="card">
+            <div class="card-header"><b>Contributor(s):</b></div>
+
+            <div class="card-body">
+              <% users =  @users.map{|i| i}; users << current_user unless @users.include?(current_user)%>
+              <%= f.input :user_id, collection: users.map{|i| [i.name, i.id.as_json.values[0]]}, input_html: { multiple: true } %>
+            </div>
+
           </div>
 
-      </div>
+          <hr>
+          <p>
+            <strong>Logs:</strong>
+            <%= f.input :log, collection: @log, label: false, selected: "Open"%>
+          </p>
+          <hr>
+          <div class="card">
+            <div class="card-header"><b>Coments:</b></div>
+            <%= f.input :coment, as: :text, label: false %>
+            <%= f.hidden_field :description, value: @task.description  %>
+          </div>
+        </div>
+        <div class="col-sm-4">
+        </br >
+        <div class='picture' style="">
+          <%= render partial: "layouts/pic_task", locals: {id: @task.id} %>
+        </div>
+        <p>
+          <strong>Type:</strong>
+          <%= f.input :task_type, collection: @task_type, label: false %>
+        </p>
+        <hr>
+        <p>
+          <strong>Priority:</strong>
+          <%= f.input :task_priority, collection: @task_priority, label: false %>
+        </p>
 
-      <hr>
-      <p>
-        <strong>Logs:</strong>
-        <%= f.input :log, collection: @log, label: false, selected: "Open"%>
-      </p>
-      <hr>
-    <div class="card">
-        <div class="card-header"><b>Coments:</b></div>
-          <%= f.input :coment, as: :text, label: false %>
-          <%= f.hidden_field :description, value: @task.description  %>
+        <hr>
+
+
+        <div class="col-sm4"><%= f.button :submit, "Save", :class => 'btn btn-success btn-mini' %></div>
+        <% end %>
       </div>
     </div>
-    <div class="col-sm-4">
-    </br >
-          <div class='picture' style="">
-            <%= render partial: "layouts/pic_task", locals: {id: @task.id} %>
-          </div>
-      <p>
-        <strong>Type:</strong>
-        <%= f.input :task_type, collection: @task_type, label: false %>
-      </p>
-      <hr>
-      <p>
-        <strong>Priority:</strong>
-        <%= f.input :task_priority, collection: @task_priority, label: false %>
-      </p>
-
-      <hr>
 
 
-    <div class="col-sm4"><%= f.button :submit, "Save", :class => 'btn btn-success btn-mini' %></div>
-     <% end %>
-  </div>
-</div>
-
-
-<script >
-  var date = new Date();
-  var today = new Date(date.getFullYear(), date.getMonth(), date.getDate());
-  (function() {
-    $(document).on('turbolinks:load', function() {
-      return $('#datepicker').datepicker({
-        format: 'yyyy-mm-dd',
-        todayBtn: true,
-        daysOfWeekHighlighted: '0,6',
-        todayHighlight: true,
-        autoclose: true,
-        startDate: today,
-        orientation: "auto left"
-      });
-    });
-  }).call(this);
-</script>
+    <script >
+      var date = new Date();
+      var today = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+      (function() {
+        $(document).on('turbolinks:load', function() {
+          return $('#datepicker').datepicker({
+            format: 'yyyy-mm-dd',
+            todayBtn: true,
+            daysOfWeekHighlighted: '0,6',
+            todayHighlight: true,
+            autoclose: true,
+            startDate: today,
+            orientation: "auto left"
+          });
+        });
+      }).call(this);
+    </script>

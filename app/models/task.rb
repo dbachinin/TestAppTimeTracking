@@ -19,7 +19,7 @@ class Task
   field :logs, type: Array, default: []
   field :teken_time, type: String
   field :pic, type: BSON::Binary
-  attr_accessor :coment, :log, :user
+  attr_accessor :coment, :log, :user, :time, :time_start
   # belongs_to :user
   after_initialize :gen_pic, if: :new_record?
   before_save :write_finish

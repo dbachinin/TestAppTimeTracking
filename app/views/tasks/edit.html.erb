@@ -23,11 +23,27 @@
       
       <b>Dates start to finish</b>
       
+      <div class="card">
+        <div class="card-header"><b>Sprint</b></div>
+        <div class="card-body">
+
+          <hr>
+          <p>Select start to end date of task</p>
           <div class="input-daterange input-group" id="datepicker">
-      <%= f.text_field :estimate_time,  class: "input-sm form-control"%>
-      <div class="input-group-addon">to</div>
-      <%= f.text_field :teken_time,  class: "input-sm form-control"%>
-    </div>
+            <%= f.text_field :estimate_time, value: @task.estimate_time, class: "input-sm form-control"%>
+            <div class="input-group-addon"> to </div>
+            <%= f.text_field :teken_time, value: @task.teken_time, class: "input-sm form-control"%>
+          </div>
+          <hr>
+          <p>Select start to end time of task</p>
+          <div class="input-daterange input-group">
+            <div class="form-inputs"><%= f.time_select :time_start, value: @estimate_time_to_form, class: "input-sm form-control"%></div>
+            <div class="input-group-addon"> to </div>
+            <div class="form-inputs"><%= f.time_select :time, value: @teken_time_to_form, class: "input-sm form-control"%></div>
+          </div>
+
+        </div>
+      </div>
 
     <hr>
     <div class="card">
